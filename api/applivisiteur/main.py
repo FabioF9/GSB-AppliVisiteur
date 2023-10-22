@@ -1,9 +1,6 @@
-from fastapi import FastAPI, Depends, status, Response, HTTPException
-from . import schemas, models
-from typing import List
-from .database import engine, SessionLocal
-from sqlalchemy.orm import Session
-from passlib.context import CryptContext
+from fastapi import FastAPI
+from . import models
+from .database import engine
 from .routers import blog, user, medecin, authentication
 
 app = FastAPI()
