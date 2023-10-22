@@ -45,26 +45,49 @@ class Window(QWidget):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
     def login(self):
-        dico = {
-        'snack':'chibre',
-        'carton':'papier',
-        'fabio':'triplemonstre'
-        }
+        # dico = {
+        # 'snack':'chibre',
+        # 'carton':'papier',
+        # 'fabio':'triplemonstre'
+        # }
+
 
         login   = self.input1.text()
         mdp     = self.input2.text()
         logedin = False
 
-        for user in dico:
-            if user == login and mdp == dico[user]:
-                logedin = True
-                self.gotoscreen2()
-                break
+        # x = requests.post(f'http://127.0.0.1:8000/login?grant_type=&username={login}&password={mdp}&scope=&client_id=&client_secret=')
+        
+        x = requests.post(f'http://127.0.0.1:8000/login',
+        data={
+            "grant_type":"",
+            "username":login,
+            "password":mdp,
+            "scope":"",
+            "client_id":"",
+            "client_secret":""
+            })
+        # jason = x.json()
+        # response = json.dumps(jason)
 
-        if logedin:
-            print('Username & Password are corrects !')
+        if x.status_code==200:
+            logedin = True
+            self.gotoscreen2()
         else:
             print('Username or Password are wrong !')
+        # for user in dico:
+        #     if user == login and mdp == dico[user]:
+        #         logedin = True
+        #         self.gotoscreen2()
+        #         break
+
+        # if logedin:
+        #     print('Username & Password are corrects !')
+        # else:
+        #     print('Username or Password are wrong !')
+
+
+            
 
     # def login(self):
     #     dico = {
