@@ -45,19 +45,11 @@ class Window(QWidget):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
     def login(self):
-        # dico = {
-        # 'snack':'chibre',
-        # 'carton':'papier',
-        # 'fabio':'triplemonstre'
-        # }
-
 
         login   = self.input1.text()
         mdp     = self.input2.text()
         logedin = False
 
-        # x = requests.post(f'http://127.0.0.1:8000/login?grant_type=&username={login}&password={mdp}&scope=&client_id=&client_secret=')
-        
         x = requests.post(f'http://127.0.0.1:8000/login',
         data={
             "grant_type":"",
@@ -67,42 +59,14 @@ class Window(QWidget):
             "client_id":"",
             "client_secret":""
             })
-        # jason = x.json()
-        # response = json.dumps(jason)
 
         if x.status_code==200:
             logedin = True
+            access_token=x.json().get("access_token")
+            print(access_token)
             self.gotoscreen2()
         else:
-            print('Username or Password are wrong !')
-        # for user in dico:
-        #     if user == login and mdp == dico[user]:
-        #         logedin = True
-        #         self.gotoscreen2()
-        #         break
-
-        # if logedin:
-        #     print('Username & Password are corrects !')
-        # else:
-        #     print('Username or Password are wrong !')
-
-
-            
-
-    # def login(self):
-    #     dico = {
-    #     'snack':'00',
-    #     'carton':'papier'
-    #     }
-
-    #     for user in dico:
-    #         if user == self.input1.text():
-    #             if self.input2.text() == dico[user]:
-    #                 print("Username & Password are corrects !");
-    #                 break
-    #         else:
-    #             print("Username or Password are wrong !")
-    
+            print('Username or Password are wrong !')    
 
 
 class Screen2(QMainWindow):
@@ -110,12 +74,13 @@ class Screen2(QMainWindow):
     def __init__(self):
         super(Screen2, self).__init__()
         loadUi("main.ui", self)
-        # fake = ['Dr.chibre','Dr.castor','Dr.carpe','Dr.MacOs']
-        # jason = {''}
-        x = requests.get('http://127.0.0.1:8000/medecins')
+
+        headers = {"Authorization": f"Bearer {access_token}"}
+        x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
         jason = x.json()
         fake = json.dumps(jason)
         self.List.addItem(fake)
+        
         self.button1.clicked.connect(self.createDr)
     def createDr(self):
         nom   = self.dr_nom.text()
