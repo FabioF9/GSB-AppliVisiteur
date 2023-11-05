@@ -12,7 +12,11 @@ class Blog(BlogBase):
 class User(BaseModel):
     name:str
     email:str
-    # password:str
+    password:str
+
+class ShowUserBlogs(BaseModel):
+    name:str
+    email:str
 
 class ShowUser(BaseModel):
     name:str
@@ -25,7 +29,7 @@ class ShowUser(BaseModel):
 class ShowBlog(BaseModel):
     title: str
     body:str
-    creator: User
+    creator: ShowUserBlogs
 
     class Config():
         orm_mode = True
@@ -34,3 +38,16 @@ class Medecin(BaseModel):
     nom : str
     spe : str
     ville : str
+
+
+class Login(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: str | None = None
