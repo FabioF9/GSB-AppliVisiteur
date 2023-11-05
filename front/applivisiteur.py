@@ -11,12 +11,15 @@ from PyQt6.QtWidgets import (
 
 class Window(QWidget):
     def __init__(self):
+        self.tokaccess = " test "
+        self.access_token = ""
         super().__init__()
         layout = QGridLayout()
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(10)
         self.setWindowTitle("Galaxy Swiss Bourdin")
         self.setLayout(layout)
+        self.access_token = ""
         # Dimensionnez la fenêtre en pixels (largeur, hauteur)
         self.resize(400, 200)
 
@@ -43,8 +46,10 @@ class Window(QWidget):
 
     def gotoscreen2(self):
         widget.setCurrentIndex(widget.currentIndex()+1)
+        menu.get_token(self.tokaccess)
 
     def login(self):
+        print(self.tokaccess)
 
         login   = self.input1.text()
         mdp     = self.input2.text()
@@ -62,8 +67,8 @@ class Window(QWidget):
 
         if x.status_code==200:
             logedin = True
-            access_token=x.json().get("access_token")
-            print(access_token)
+            self.tokaccess = x.json().get("access_token")
+            print(self.tokaccess)
             self.gotoscreen2()
         else:
             print('Username or Password are wrong !')    
@@ -71,18 +76,24 @@ class Window(QWidget):
 
 class Screen2(QMainWindow):
     """docstring for Screen2"""
-    def __init__(self):
+    def __init__(self, login):
+        super().__init__()
+        self.tokaccess = ""
         super(Screen2, self).__init__()
         loadUi("main.ui", self)
-
-        headers = {"Authorization": f"Bearer {access_token}"}
-        x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
+        # self.access_token = Window.access_token
+        # print(self.access_token)
+        # headers = {"Authorization": f"Bearer {access_token}"}
+        # x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
+        x = requests.get('http://127.0.0.1:8000/medecins')
         jason = x.json()
         fake = json.dumps(jason)
-        self.List.addItem(fake)
-        
+        self.List.addItem(fake)        
         self.button1.clicked.connect(self.createDr)
+
     def createDr(self):
+        print(f"Window token = {login.tokaccess}")
+        print(f"Screen 2 token = {self.tokaccess}")
         nom   = self.dr_nom.text()
         spe   = self.dr_spe.text()
         ville = self.dr_ville.text()
@@ -92,6 +103,10 @@ class Screen2(QMainWindow):
             "ville":ville
             })
         self.List.repaint()
+
+def get_tokaccess(tokaccess):
+    self.tokaccess = login.tokaccess
+    print(self.tokaccess)
 
 app = QApplication(sys.argv)
 
@@ -110,7 +125,7 @@ app.setStyleSheet("""
 
 widget = QtWidgets.QStackedWidget()
 login = Window()
-menu = Screen2()
+menu = Screen2(login)
 widget.addWidget(login)
 widget.addWidget(menu)
 
