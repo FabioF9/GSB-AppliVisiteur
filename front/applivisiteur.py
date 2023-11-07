@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
 
 class Window(QWidget):
     def __init__(self):
-        self.tokaccess = " test "
+        # self.tokaccess = " test "
         self.access_token = ""
         super().__init__()
         layout = QGridLayout()
@@ -33,10 +33,12 @@ class Window(QWidget):
         layout.addWidget(pwd, 2, 0)
 
         self.input1 = QLineEdit()
+        self.input1.returnPressed.connect(self.login)
         layout.addWidget(self.input1, 1, 1)
 
         self.input2 = QLineEdit()
         self.input2.setEchoMode(QLineEdit.EchoMode.Password)
+        self.input2.returnPressed.connect(self.login)
         layout.addWidget(self.input2, 2, 1)
 
         button1 = QPushButton("Login")
@@ -46,10 +48,10 @@ class Window(QWidget):
 
     def gotoscreen2(self):
         widget.setCurrentIndex(widget.currentIndex()+1)
-        menu.get_token(self.tokaccess)
+        # menu.get_token(self.tokaccess)
 
     def login(self):
-        print(self.tokaccess)
+        # print(self.tokaccess)
 
         login   = self.input1.text()
         mdp     = self.input2.text()
@@ -67,8 +69,8 @@ class Window(QWidget):
 
         if x.status_code==200:
             logedin = True
-            self.tokaccess = x.json().get("access_token")
-            print(self.tokaccess)
+            # self.tokaccess = x.json().get("access_token")
+            # print(self.tokaccess)
             self.gotoscreen2()
         else:
             print('Username or Password are wrong !')    
@@ -85,15 +87,21 @@ class Screen2(QMainWindow):
         # print(self.access_token)
         # headers = {"Authorization": f"Bearer {access_token}"}
         # x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
+        self.set_list()
+        self.index_button_create.clicked.connect(self.createDr)
+        self.index_button_update.clicked.connect(self.updateDr)
+        self.index_button_delete.clicked.connect(self.deleteDr)
+
+    def set_list(self):
         x = requests.get('http://127.0.0.1:8000/medecins')
         jason = x.json()
         fake = json.dumps(jason)
-        self.List.addItem(fake)        
-        self.button1.clicked.connect(self.createDr)
+        self.List.clear()
+        self.List.setText(fake)  
 
     def createDr(self):
-        print(f"Window token = {login.tokaccess}")
-        print(f"Screen 2 token = {self.tokaccess}")
+        # print(f"Window token = {login.tokaccess}")
+        # print(f"Screen 2 token = {self.tokaccess}")
         nom   = self.dr_nom.text()
         spe   = self.dr_spe.text()
         ville = self.dr_ville.text()
@@ -102,11 +110,29 @@ class Screen2(QMainWindow):
             "spe":spe,
             "ville":ville
             })
-        self.List.repaint()
+        self.set_list()
 
-def get_tokaccess(tokaccess):
-    self.tokaccess = login.tokaccess
-    print(self.tokaccess)
+
+    def updateDr(self):
+        id_dr = self.dr_id.text()
+        nom   = self.dr_nom.text()
+        spe   = self.dr_spe.text()
+        ville = self.dr_ville.text()
+        x = requests.put(f'http://127.0.0.1:8000/update_medecin/{id_dr}', json={
+            "nom":nom,
+            "spe":spe,
+            "ville":ville
+            })
+        self.set_list()
+
+    def deleteDr(self):
+        id_dr = self.dr_id.text()
+        x = requests.delete(f'http://127.0.0.1:8000/delete_medecin/{id_dr}')
+        self.set_list()
+    
+# def get_tokaccess(tokaccess):
+#     self.tokaccess = login.tokaccess
+#     print(self.tokaccess)
 
 app = QApplication(sys.argv)
 
