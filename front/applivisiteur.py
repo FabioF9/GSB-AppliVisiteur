@@ -89,7 +89,6 @@ class Screen2(QMainWindow):
         # x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
         self.set_list()
         self.index_button_create.clicked.connect(self.createDr)
-        self.index_button_read.clicked.connect(self.readDr)
         self.index_button_update.clicked.connect(self.updateDr)
         self.index_button_delete.clicked.connect(self.deleteDr)
 
@@ -119,7 +118,7 @@ class Screen2(QMainWindow):
         nom   = self.dr_nom.text()
         spe   = self.dr_spe.text()
         ville = self.dr_ville.text()
-        x = requests.post(f'http://127.0.0.1:8000/update_medecin/{id_dr}', json={
+        x = requests.put(f'http://127.0.0.1:8000/update_medecin/{id_dr}', json={
             "nom":nom,
             "spe":spe,
             "ville":ville
@@ -128,8 +127,8 @@ class Screen2(QMainWindow):
 
     def deleteDr(self):
         id_dr = self.dr_id.text()
-        x = requests.post(f'http://127.0.0.1:8000/delete_medecin/{id_dr}')
-    self.set_list()
+        x = requests.delete(f'http://127.0.0.1:8000/delete_medecin/{id_dr}')
+        self.set_list()
     
 # def get_tokaccess(tokaccess):
 #     self.tokaccess = login.tokaccess
