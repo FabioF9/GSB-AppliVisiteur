@@ -91,6 +91,7 @@ class Screen2(QMainWindow):
         self.index_button_create.clicked.connect(self.createDr)
         self.index_button_update.clicked.connect(self.updateDr)
         self.index_button_delete.clicked.connect(self.deleteDr)
+        self.index_button_read.clicked.connect(self.gotoCpRendu)
 
     def set_list(self):
         x = requests.get('http://127.0.0.1:8000/medecins')
@@ -98,6 +99,10 @@ class Screen2(QMainWindow):
         fake = json.dumps(jason)
         self.List.clear()
         self.List.setText(fake)  
+
+    def gotoCpRendu(self):
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
 
     def createDr(self):
         # print(f"Window token = {login.tokaccess}")
@@ -129,6 +134,17 @@ class Screen2(QMainWindow):
         id_dr = self.dr_id.text()
         x = requests.delete(f'http://127.0.0.1:8000/delete_medecin/{id_dr}')
         self.set_list()
+
+
+
+
+class CpRendu(QMainWindow):
+    """docstring for CpRendu"""
+    def __init__(self):
+        super().__init__()
+        self.tokaccess = ""
+        super(CpRendu, self).__init__()
+        loadUi("CpRendu.ui", self)
     
 # def get_tokaccess(tokaccess):
 #     self.tokaccess = login.tokaccess
@@ -152,8 +168,10 @@ app.setStyleSheet("""
 widget = QtWidgets.QStackedWidget()
 login = Window()
 menu = Screen2(login)
+CpRendu = CpRendu()
 widget.addWidget(login)
 widget.addWidget(menu)
+widget.addWidget(CpRendu)
 
 widget.show()
 sys.exit(app.exec())
