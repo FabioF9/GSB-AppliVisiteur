@@ -145,10 +145,14 @@ class CpRendu(QMainWindow):
         self.tokaccess = ""
         super(CpRendu, self).__init__()
         loadUi("CpRendu.ui", self)
-    
-# def get_tokaccess(tokaccess):
-#     self.tokaccess = login.tokaccess
-#     print(self.tokaccess)
+        self.insert_medecins()
+        
+    def insert_medecins(self):
+        x = requests.get('http://127.0.0.1:8000/medecins')
+        jason = x.json()
+        for i in jason:
+            self.CpRendu_dropdown.addItem(i['nom'])
+
 
 app = QApplication(sys.argv)
 
