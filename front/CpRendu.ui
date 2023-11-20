@@ -24,15 +24,58 @@
      </rect>
     </property>
    </widget>
-   <widget class="QComboBox" name="CpRendu_dropdown">
+   <widget class="QComboBox" name="CpRendu_medecins">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>100</y>
+      <x>490</x>
+      <y>50</y>
       <width>201</width>
       <height>22</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QPushButton" name="bouton_retour">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>480</y>
+      <width>241</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Retour acceuil</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="CpRendu_motif">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>90</y>
+      <width>201</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Visite</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Autre</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Périodicité</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Remontage/Chute de prescription</string>
+     </property>
+    </item>
    </widget>
   </widget>
  </widget>

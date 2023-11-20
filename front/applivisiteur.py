@@ -92,6 +92,7 @@ class Screen2(QMainWindow):
         self.index_button_update.clicked.connect(self.updateDr)
         self.index_button_delete.clicked.connect(self.deleteDr)
         self.index_button_read.clicked.connect(self.gotoCpRendu)
+        self.calendar.setGridVisible(True);
 
     def set_list(self):
         x = requests.get('http://127.0.0.1:8000/medecins')
@@ -146,12 +147,16 @@ class CpRendu(QMainWindow):
         super(CpRendu, self).__init__()
         loadUi("CpRendu.ui", self)
         self.insert_medecins()
+        self.bouton_retour.clicked.connect(self.retour_acceuil)
         
     def insert_medecins(self):
         x = requests.get('http://127.0.0.1:8000/medecins')
         jason = x.json()
         for i in jason:
-            self.CpRendu_dropdown.addItem(i['nom'])
+            self.CpRendu_medecins.addItem(i['nom'])
+
+    def retour_acceuil(self):
+        widget.setCurrentIndex(widget.currentIndex()-1)
 
 
 app = QApplication(sys.argv)

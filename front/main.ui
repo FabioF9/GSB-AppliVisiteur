@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1150</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="minimumSize">
+    <size>
+     <width>1150</width>
+     <height>900</height>
+    </size>
+   </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
@@ -52,19 +58,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="index_button_read">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>read</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="index_button_update">
          <property name="minimumSize">
           <size>
@@ -99,7 +92,7 @@
      <rect>
       <x>0</x>
       <y>360</y>
-      <width>351</width>
+      <width>301</width>
       <height>241</height>
      </rect>
     </property>
@@ -107,14 +100,19 @@
    <widget class="QLabel" name="Titre">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>461</width>
+      <x>210</x>
+      <y>10</y>
+      <width>111</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Titre</string>
+     <string> Page d'acceuil</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="List">
@@ -125,6 +123,30 @@
       <width>521</width>
       <height>301</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="index_button_read">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>360</y>
+      <width>237</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Créer un Compte-rendu</string>
     </property>
    </widget>
   </widget>
