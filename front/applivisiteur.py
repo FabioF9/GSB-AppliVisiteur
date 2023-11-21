@@ -147,6 +147,7 @@ class CpRendu(QMainWindow):
         super(CpRendu, self).__init__()
         loadUi("CpRendu.ui", self)
         self.insert_medecins()
+        self.CpRendu_medecins.currentIndexChanged.connect(self.test)
         self.bouton_retour.clicked.connect(self.retour_acceuil)
         
     def insert_medecins(self):
@@ -157,6 +158,10 @@ class CpRendu(QMainWindow):
 
     def retour_acceuil(self):
         widget.setCurrentIndex(widget.currentIndex()-1)
+
+    def test(self):
+        print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
+        print("le nom actuel  : "+self.CpRendu_medecins.currentText())
 
 
 app = QApplication(sys.argv)
