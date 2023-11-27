@@ -149,6 +149,19 @@
      <string>Créer un Compte-rendu</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="index_button_view">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>480</y>
+      <width>241</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Voir Pdf</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
