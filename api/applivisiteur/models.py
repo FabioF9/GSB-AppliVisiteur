@@ -23,7 +23,7 @@ class User(Base):
     password = Column(String)
 
     blogs = relationship ('Blog', back_populates="creator")
-    rapportvisite = relationship('Rapport_Visite', back_populates="creator_rapvisite")
+    rapport_visite = relationship('Rapport_Visite',back_populates="creator")
 
 class Medecin(Base):
     __tablename__ = "medecin"
@@ -33,14 +33,14 @@ class Medecin(Base):
     spe = Column(String)
     ville = Column(String)
 
-class RapportVisite(Base):
+class Rapport_Visite(Base):
     __tablename__ = "Rapport_Visite"
 
     RAP_NUM = Column(Integer, primary_key=True, index=True)
-    RAP_DATE = Column(Date)
+    RAP_DATE = Column(String)
     RAP_BILAN = Column(String)
     RAP_MOTIF = Column(String)
     RAP_COMMENTAIRE = Column(String)
-    VIS_MATRICULE = Column (Integer,ForeignKey('users.id'))
+    user_id = Column(String, ForeignKey('users.id'))
 
-    creator_rapvisite = relationship("User", back_populates="rapportvisite")
+    creator = relationship("User", back_populates="rapport_visite")
