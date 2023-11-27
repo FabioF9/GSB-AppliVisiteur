@@ -39,6 +39,14 @@ class Medecin(BaseModel):
     spe : str
     ville : str
 
+class Rapport(BaseModel):
+    # RAP_NUM : int
+    RAP_DATE : str
+    RAP_BILAN : str
+    RAP_MOTIF : str
+    RAP_COMMENTAIRE : str
+    # user_id : int
+
 
 class Login(BaseModel):
     username: str

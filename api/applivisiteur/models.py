@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from .database import Base 
 from sqlalchemy.orm import relationship
 
@@ -23,6 +23,7 @@ class User(Base):
     password = Column(String)
 
     blogs = relationship ('Blog', back_populates="creator")
+    rapport_visite = relationship('Rapport_Visite',back_populates="creator")
 
 class Medecin(Base):
     __tablename__ = "medecin"
@@ -32,4 +33,14 @@ class Medecin(Base):
     spe = Column(String)
     ville = Column(String)
 
+class Rapport_Visite(Base):
+    __tablename__ = "Rapport_Visite"
 
+    RAP_NUM = Column(Integer, primary_key=True, index=True)
+    RAP_DATE = Column(String)
+    RAP_BILAN = Column(String)
+    RAP_MOTIF = Column(String)
+    RAP_COMMENTAIRE = Column(String)
+    user_id = Column(String, ForeignKey('users.id'))
+
+    creator = relationship("User", back_populates="rapport_visite")
