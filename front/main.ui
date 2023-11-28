@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1150</width>
-    <height>900</height>
+    <width>586</width>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,151 +16,134 @@
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
     <size>
-     <width>1150</width>
-     <height>900</height>
+     <width>586</width>
+     <height>477</height>
     </size>
    </property>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>0</y>
-      <width>241</width>
-      <height>601</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QLineEdit" name="dr_id"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="dr_nom"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="dr_spe"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="dr_ville"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="index_button_create">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>create</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="index_button_update">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>update</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="index_button_delete">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>delete</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QCalendarWidget" name="calendar">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>360</y>
-      <width>301</width>
-      <height>241</height>
+      <y>0</y>
+      <width>585</width>
+      <height>476</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QLabel" name="Titre">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>10</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string> Page d'acceuil</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="List">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>521</width>
-      <height>301</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="index_button_read">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>360</y>
-      <width>237</width>
-      <height>100</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>100</height>
-     </size>
-    </property>
-    <property name="text">
-     <string>Créer un Compte-rendu</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="index_button_view">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>480</y>
-      <width>241</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Voir Pdf</string>
-    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="Titre">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string> Page d'acceuil</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2" rowspan="4">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLineEdit" name="dr_id"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="dr_nom"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="dr_spe"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="dr_ville"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="index_button_create">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>create</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="index_button_update">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>update</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="index_button_delete">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>delete</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QTableWidget" name="tableWidget">
+       <column>
+        <property name="text">
+         <string>Nom</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Spe</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Ville</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item row="2" column="0" rowspan="2">
+      <widget class="QCalendarWidget" name="calendar"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="index_button_read">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Créer un Compte-rendu</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="index_button_view">
+       <property name="text">
+        <string>Voir Pdf</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>

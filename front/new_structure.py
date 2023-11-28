@@ -9,10 +9,12 @@ from PyQt6.QtWidgets import (
     QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow
 )
 
+
+# Index 0
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
         super(Login_page, self).__init__()
-        self.tokaccess = " test "
+        self.tokaccess = " tokaccess "
         self.access_token = ""
         layout = QGridLayout()
         layout.setContentsMargins(20, 20, 20, 20)
@@ -41,8 +43,10 @@ class Login_page(QtWidgets.QWidget):
         self.button1 = QPushButton("Login")
         layout.addWidget(self.button1, 3, 1)
 
-     def login(self):
-        print(self.tokaccess)
+        self.button1.clicked.connect(self.login)
+
+    def login(self):
+        print(f'le token au début : {self.tokaccess}')
 
         login   = self.input1.text()
         mdp     = self.input2.text()
@@ -60,22 +64,24 @@ class Login_page(QtWidgets.QWidget):
 
         if x.status_code==200:
             logedin = True
-            self.tokaccess = x.json().get("access_token")
-            print(self.tokaccess)
-            self.gotoscreen2()
+            self.tokaccess = x.json()[0]['access_token']
+            print(f'le token au apres une réussite : {self.tokaccess}')
+            appStack.setCurrentWidget(appStack.index_page)
         else:
             print('Username or Password are wrong !')
 
+    def doSomethingNext(self):
+        print("début de l'application")
 
+# Index 1
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
         super(Index_page, self).__init__()
         # ...
         self.prevButton = QtWidgets.QPushButton('Previous')
-        self.doSomething()
 
-    def doSomething(self):
-        ""
+    def doSomethingNext(self):
+        print("mon fiak")
 
 
     """docstring for Index_page"""
@@ -99,18 +105,21 @@ class Index_page(QtWidgets.QWidget):
 class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
         super(Stack, self).__init__()
-        self.login = Login_page()
-        self.login.button1.clicked.connect(self.goNext)
-        self.addWidget(self.login)
+        # Index 0
+        self.login_page = Login_page()
+        # Index 1
+        self.index_page = Index_page()
+        self.addWidget(self.login_page)
+        self.addWidget(self.index_page)
         self.currentChanged.connect(self.initCurrent)
 
-    def goNext(self):
-        
+    def goNext(self, target):
+        print(target)
 
-    def goPrev(self):
-        self.set_current_screen()
+    # def goPrev(self):
+    #     self.set_current_screen()
 
-    def initCurrent():
+    def initCurrent(self):
         if self.currentWidget():
             self.currentWidget().doSomethingNext()
 

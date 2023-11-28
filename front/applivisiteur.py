@@ -98,10 +98,13 @@ class Screen2(QMainWindow):
 
     def set_list(self):
         x = requests.get('http://127.0.0.1:8000/medecins')
-        jason = x.json()
-        fake = json.dumps(jason)
-        self.List.clear()
-        self.List.setText(fake)  
+        lstMedecins = x.json()        
+        for medecin in lstMedecins:
+                self.tableWidget.insertRow(self.tableWidget.rowCount())                
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 0, QtWidgets.QTableWidgetItem(medecin['nom']))
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 1, QtWidgets.QTableWidgetItem(medecin['spe']))
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 2, QtWidgets.QTableWidgetItem(medecin['nom']))
+
 
     def gotoCpRendu(self):
         widget.setCurrentIndex(widget.currentIndex()+1)
@@ -173,9 +176,18 @@ class CpRendu(QMainWindow):
         else:
             motif = self.CpRendu_motif.currentText()
             print("le motif actuel : "+self.CpRendu_motif.currentText())
+        commentaire = self.CpRendu_commentaire.toPlainText()
         print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
         print("la date actuel : "+todayFr)
+        titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
         print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
+        x = requests.post('http://127.0.0.1:8000/create_rapport', json={
+            "RAP_DATE":todayFr,
+            "RAP_BILAN":titre,
+            "RAP_MOTIF":motif,
+            "RAP_COMMENTAIRE":commentaire
+            })
+
         
 class ViewPdf(QMainWindow):
     """docstring for CpRendu"""
