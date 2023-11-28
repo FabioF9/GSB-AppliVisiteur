@@ -9,7 +9,7 @@ router = APIRouter(
 get_db = database.get_db
 
 @router.post('/create_medecin', response_model=schemas.Medecin )
-def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
+def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db)):
     new_medecin = models.Medecin(nom=request.nom, spe=request.spe, ville=request.ville)
     db.add(new_medecin)
     db.commit()
@@ -17,7 +17,7 @@ def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db),curre
     return new_medecin 
 
 @router.get('/medecin/{id}', response_model=schemas.Medecin )
-def get_user(id:int, db : Session = Depends(get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
+def get_user(id:int, db : Session = Depends(get_db)):
     medecin = db.query(models.Medecin).filter(models.Medecin.id == id).first()
     if not medecin :
          raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -26,7 +26,7 @@ def get_user(id:int, db : Session = Depends(get_db),current_user: schemas.User =
 
 
 @router.get('/medecins', response_model=List[schemas.Medecin] )
-def all(db: Session = Depends(get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
+def all(db: Session = Depends(get_db)):
     medecins = db.query(models.Medecin).all()
     if not medecins :
          raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
