@@ -25,6 +25,18 @@ class User(Base):
     blogs = relationship ('Blog', back_populates="creator")
     rapport_visite = relationship('Rapport_Visite',back_populates="creator")
 
+
+class Visiteur(Base):
+    __tablename__ = "Visiteur"
+
+    VIS_MATRICULE = Column(Integer, primary_key=True, index=True)
+    VIS_NOM = Column(String)
+    VIS_ADRESSE = Column(String)
+    VIS_CP = Column(Integer)
+    VIS_VILLE = Column(String)
+    LOG_LOGIN = Column(String)
+    LOG_MDP = Column(String)
+
 class Medecin(Base):
     __tablename__ = "medecin"
 
