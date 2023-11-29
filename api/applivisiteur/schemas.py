@@ -1,43 +1,13 @@
 from typing import List
 from pydantic import BaseModel
 
-class BlogBase(BaseModel):
-    title:str
-    body:str
-
-class Blog(BlogBase):
-    class Config():
-        orm_mode = True
-
-class User(BaseModel):
-    name:str
-    email:str
-    password:str
-
-class ShowUserBlogs(BaseModel):
-    name:str
-    email:str
-
-class ShowUser(BaseModel):
-    name:str
-    email:str 
-    blogs:List[Blog] = []
-    class Config():
-        orm_mode = True
-    
-
-class ShowBlog(BaseModel):
-    title: str
-    body:str
-    creator: ShowUserBlogs
-
-    class Config():
-        orm_mode = True
 
 class Medecin(BaseModel):
-    nom : str
-    spe : str
-    ville : str
+    MED_NOM : str
+    MED_PRENOM : str
+    MED_ADRESSE : str
+    MED_CP : str
+    MED_VILLE : str
 
 class Rapport(BaseModel):
     # RAP_NUM : int
@@ -47,6 +17,17 @@ class Rapport(BaseModel):
     RAP_COMMENTAIRE : str
     # user_id : int
 
+class Visiteur (BaseModel):
+
+    VIS_NOM : str
+    VIS_ADRESSE : str 
+    VIS_CP : int
+    VIS_VILLE : str
+    LOG_LOGIN : str
+    LOG_MDP : str
+
+class showVisiteur(BaseModel):
+    LOG_LOGIN : str
 
 class Login(BaseModel):
     username: str

@@ -18,7 +18,7 @@ def all(db: Session = Depends(get_db)):
 
 @router.post('/create_rapport', response_model=schemas.Rapport)
 def create_medecin(request: schemas.Rapport, db: Session = Depends(get_db)):
-    new_rapport = models.Rapport_Visite(RAP_DATE=request.RAP_DATE, RAP_BILAN=request.RAP_BILAN, RAP_MOTIF=request.RAP_MOTIF, RAP_COMMENTAIRE=request.RAP_COMMENTAIRE,user_id=1)
+    new_rapport = models.Rapport_Visite(RAP_DATE=request.RAP_DATE, RAP_BILAN=request.RAP_BILAN, RAP_MOTIF=request.RAP_MOTIF, RAP_COMMENTAIRE=request.RAP_COMMENTAIRE,VIS_MATRICULE=1)
     db.add(new_rapport)
     db.commit()
     db.refresh(new_rapport)
