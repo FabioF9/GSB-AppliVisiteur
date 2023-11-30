@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTextEdit" name="CpRendu_commentaire">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>50</y>
+      <width>401</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="CpRendu_medecins">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>50</y>
+      <width>201</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="bouton_retour">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>480</y>
+      <width>241</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Retour acceuil</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="CpRendu_motif">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>90</y>
+      <width>201</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Visite</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Autre</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Périodicité</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Remontage/Chute de prescription</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="CpRendu_motif_autre">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>120</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Autre cas de visite</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CpRendu_test">
+    <property name="geometry">
+     <rect>
+      <x>304</x>
+      <y>482</y>
+      <width>281</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Test</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="CpRendu_echantillonsSt">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>230</y>
+      <width>151</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Alphasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Betasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Deltasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Gammasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Epsilonsium</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="CpRendu_echantillonsNd">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>270</y>
+      <width>151</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Alphasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Betasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Deltasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Gammasium</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Epsilonsium</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QSpinBox" name="CpRendu_nbrEchantillonsSt">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>230</y>
+      <width>71</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>2</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="CpRendu_nbrEchantillonsNd">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>270</y>
+      <width>71</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>2</number>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

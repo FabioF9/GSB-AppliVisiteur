@@ -2,6 +2,7 @@ import sys
 import typing
 import requests
 import json
+from datetime import date
 from PyQt6 import QtWidgets
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt
@@ -91,13 +92,23 @@ class Screen2(QMainWindow):
         self.index_button_create.clicked.connect(self.createDr)
         self.index_button_update.clicked.connect(self.updateDr)
         self.index_button_delete.clicked.connect(self.deleteDr)
+        self.index_button_read.clicked.connect(self.gotoCpRendu)
+        self.index_button_view.clicked.connect(self.gotoView)
+        self.calendar.setGridVisible(True);
 
     def set_list(self):
         x = requests.get('http://127.0.0.1:8000/medecins')
-        jason = x.json()
-        fake = json.dumps(jason)
-        self.List.clear()
-        self.List.setText(fake)  
+        lstMedecins = x.json()        
+        for medecin in lstMedecins:
+                self.tableWidget.insertRow(self.tableWidget.rowCount())                
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 0, QtWidgets.QTableWidgetItem(medecin['nom']))
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 1, QtWidgets.QTableWidgetItem(medecin['spe']))
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 2, QtWidgets.QTableWidgetItem(medecin['nom']))
+
+
+    def gotoCpRendu(self):
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
 
     def createDr(self):
         # print(f"Window token = {login.tokaccess}")
@@ -129,10 +140,68 @@ class Screen2(QMainWindow):
         id_dr = self.dr_id.text()
         x = requests.delete(f'http://127.0.0.1:8000/delete_medecin/{id_dr}')
         self.set_list()
+
+    def gotoView(self):
+        widget.setCurrentIndex(widget.currentIndex()+2)
+
+
+
+
+class CpRendu(QMainWindow):
+    """docstring for CpRendu"""
+    def __init__(self):
+        super().__init__()
+        self.tokaccess = ""
+        super(CpRendu, self).__init__()
+        loadUi("CpRendu.ui", self)
+        self.insert_medecins()
+        self.CpRendu_test.clicked.connect(self.test)
+        self.bouton_retour.clicked.connect(self.retour_acceuil)
+        
+    def insert_medecins(self):
+        x = requests.get('http://127.0.0.1:8000/medecins')
+        jason = x.json()
+        for i in jason:
+            self.CpRendu_medecins.addItem(i['nom'])
+
+    def retour_acceuil(self):
+        widget.setCurrentIndex(widget.currentIndex()-1)
+
+    def test(self):
+        print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
+        print("le nom actuel  : "+self.CpRendu_medecins.currentText())
+        if self.CpRendu_motif.currentText() == "Autre":
+           motif = self.CpRendu_motif_autre.text()
+           print("le motif actuel : "+self.CpRendu_motif_autre.text())
+        else:
+            motif = self.CpRendu_motif.currentText()
+            print("le motif actuel : "+self.CpRendu_motif.currentText())
+        commentaire = self.CpRendu_commentaire.toPlainText()
+        print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
+        print("la date actuel : "+todayFr)
+        titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
+        print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
+        x = requests.post('http://127.0.0.1:8000/create_rapport', json={
+            "RAP_DATE":todayFr,
+            "RAP_BILAN":titre,
+            "RAP_MOTIF":motif,
+            "RAP_COMMENTAIRE":commentaire
+            })
+
+        
+class ViewPdf(QMainWindow):
+    """docstring for CpRendu"""
+    def __init__(self):
+        super().__init__()
+        self.tokaccess = ""
+        super(ViewPdf, self).__init__()
+        loadUi("ViewRapport.ui", self)
+        self.view_retour.clicked.connect(self.retour_acceuil)
     
-# def get_tokaccess(tokaccess):
-#     self.tokaccess = login.tokaccess
-#     print(self.tokaccess)
+    def retour_acceuil(self):
+        widget.setCurrentIndex(widget.currentIndex()-2)
+
+
 
 app = QApplication(sys.argv)
 
@@ -149,11 +218,20 @@ app.setStyleSheet("""
 
  """)
 
+
+today = date.today()
+todayFr = today.strftime("%d/%m/%Y")
+
+
 widget = QtWidgets.QStackedWidget()
 login = Window()
 menu = Screen2(login)
+CpRendu = CpRendu()
+View = ViewPdf()
 widget.addWidget(login)
 widget.addWidget(menu)
+widget.addWidget(CpRendu)
+widget.addWidget(View)
 
 widget.show()
 sys.exit(app.exec())
