@@ -1,4 +1,5 @@
 from typing import List
+from datetime import datetime, date
 from pydantic import BaseModel
 
 
@@ -11,7 +12,7 @@ class Medecin(BaseModel):
 
 class Rapport(BaseModel):
     # RAP_NUM : int
-    RAP_DATE : str
+    RAP_DATE : date
     RAP_BILAN : str
     RAP_MOTIF : str
     RAP_COMMENTAIRE : str
@@ -23,11 +24,31 @@ class Visiteur (BaseModel):
     VIS_ADRESSE : str 
     VIS_CP : int
     VIS_VILLE : str
+    VIS_DATEEMBAUCHE : date
     LOG_LOGIN : str
     LOG_MDP : str
 
 class showVisiteur(BaseModel):
     LOG_LOGIN : str
+    rapport : List [Rapport] = []
+
+class showRapportCreator(BaseModel):
+
+    VIS_MATRICULE : int
+    VIS_NOM : str
+    VIS_ADRESSE : str 
+    VIS_CP : int
+    VIS_VILLE : str
+    VIS_DATEEMBAUCHE : date
+
+
+class showRapport (BaseModel):
+    RAP_DATE : date
+    RAP_BILAN : str
+    RAP_MOTIF : str
+    RAP_COMMENTAIRE : str
+
+    creator : showRapportCreator
 
 class Login(BaseModel):
     username: str

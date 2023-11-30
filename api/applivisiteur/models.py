@@ -17,11 +17,15 @@ class Visiteur(Base):
     LOG_MDP = Column(String)
     VIS_ADMIN = Column(Integer)
 
+    rapport = relationship('Rapport_Visite', back_populates="creator")
+
 class Secteur(Base):
     __tablename__ = "Secteur"
 
     SEC_CODE = Column(Integer, primary_key=True, index=True)
     SEC_LIBELLE = Column(String)
+
+    region = relationship('Region', back_populates="secteur")
 
 class Region(Base):
     __tablename__ = "Region"
@@ -29,6 +33,8 @@ class Region(Base):
     REG_CODE = Column(Integer, primary_key=True, index=True)
     REG_NOM = Column(String)
     SEC_CODE = Column(Integer, ForeignKey('Secteur.SEC_CODE'))
+
+    secteur = relationship('Secteur', back_populates="region")
 
 class Medecin(Base):
     __tablename__ = "Medecin"
@@ -42,6 +48,7 @@ class Medecin(Base):
     TYP_ID = Column(String, ForeignKey('Type_Medecin.TYP_ID'))
 
     type = relationship('Type_Medecin',back_populates="medecin")
+    rapport_med = relationship('Rapport_Visite', back_populates="affiliate_med")
 
 class Type_Medecin(Base):
     __tablename__ = "Type_Medecin"
@@ -51,17 +58,22 @@ class Type_Medecin(Base):
     TYP_LIEU = Column(String)
 
     medecin = relationship('Medecin', back_populates="type")
+    
 
 class Rapport_Visite(Base):
     __tablename__ = "Rapport_Visite"
 
     RAP_NUM = Column(Integer, primary_key=True, index=True)
-    RAP_DATE = Column(String)
+    RAP_DATE = Column(Date)
     RAP_BILAN = Column(String)
     RAP_MOTIF = Column(String)
     RAP_COMMENTAIRE = Column(String)
     VIS_MATRICULE = Column(String, ForeignKey('Visiteur.VIS_MATRICULE'))
     MED_ID = Column(Integer, ForeignKey('Medecin.MED_ID'))
+
+    creator = relationship('Visiteur', back_populates="rapport")
+    affiliate_med = relationship('Medecin', back_populates="rapport_med")
+    affiliate_echantillon = relationship('Echantillons', back_populates="rapport_echantillon")
 
 
 class Medicaments(Base):
@@ -76,6 +88,8 @@ class Medicaments(Base):
     MEDI_PRIX = Column(Integer)
     MEDI_STOCK = Column(String)
 
+    echantillon = relationship('Echantillons', back_populates="medicament_echantillon")
+
 class Echantillons(Base):
     __tablename__ = "Echantillons"
     
@@ -83,3 +97,7 @@ class Echantillons(Base):
     ECH_NOMBRE = Column(Integer)
     RAP_NUM = Column(Integer, ForeignKey('Rapport_Visite.RAP_NUM'))
     MEDI_ID = Column(Integer, ForeignKey('Medicaments.MEDI_ID'))
+
+    rapport_echantillon = relationship('Rapport_Visite', back_populates="affiliate_echantillon")
+    medicament_echantillon = relationship('Medicaments', back_populates="echantillon")
+
