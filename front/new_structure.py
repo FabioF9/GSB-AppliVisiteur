@@ -9,19 +9,22 @@ from PyQt6.QtWidgets import (
     QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow
 )
 
+class User():
+    def __init__(self, access_token, user_id):
+        self.access_token = access_token
+        self.id = user_id
+
+    def getUserDatas(self):
+        x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
 
 # Index 0
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
         super(Login_page, self).__init__()
         loadUi("new_login.ui", self)
-        self.tokaccess = " tokaccess "
-        self.access_token = ""
         self.login_button1.clicked.connect(self.login)
 
     def login(self):
-        print(f'le token au début : {self.tokaccess}')
-
         login   = self.login_input1.text()
         mdp     = self.login_input2.text()
         logedin = False
@@ -84,6 +87,7 @@ class Stack(QtWidgets.QStackedWidget):
         self.index_page = Index_page()
         self.addWidget(self.login_page)
         self.addWidget(self.index_page)
+        self.initCurrent()
         self.currentChanged.connect(self.initCurrent)
 
     def goNext(self, target):
