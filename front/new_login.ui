@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Login_page</class>
+ <widget class="QWidget" name="Login_page">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>571</width>
-    <height>507</height>
+    <width>587</width>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>200</y>
+     <x>180</x>
+     <y>170</y>
      <width>251</width>
      <height>126</height>
     </rect>
@@ -34,7 +34,7 @@
      </widget>
     </item>
     <item row="4" column="1">
-     <widget class="QLineEdit" name="passwordLineEdit"/>
+     <widget class="QLineEdit" name="login_input1"/>
     </item>
     <item row="6" column="0">
      <widget class="QLabel" name="usernameLabel">
@@ -44,17 +44,10 @@
      </widget>
     </item>
     <item row="6" column="1">
-     <widget class="QLineEdit" name="usernameLineEdit"/>
-    </item>
-    <item row="7" column="0" colspan="2">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
+     <widget class="QLineEdit" name="login_input2"/>
     </item>
     <item row="3" column="0" colspan="2">
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="login_titre">
       <property name="font">
        <font>
         <pointsize>12</pointsize>
@@ -73,6 +66,25 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QPushButton" name="login_button1">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>PushButton</string>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </item>

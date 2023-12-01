@@ -14,42 +14,16 @@ from PyQt6.QtWidgets import (
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
         super(Login_page, self).__init__()
+        loadUi("new_login.ui", self)
         self.tokaccess = " tokaccess "
         self.access_token = ""
-        layout = QGridLayout()
-        layout.setContentsMargins(20, 20, 20, 20)
-        layout.setSpacing(10)
-        self.setLayout(layout)
-        self.access_token = ""
-        # Dimensionnez la fenêtre en pixels (largeur, hauteur)
-        self.resize(400, 200)
-
-        title = QLabel("Login Form :")
-        layout.addWidget(title, 0, 1)
-
-        user = QLabel("Username :")
-        layout.addWidget(user, 1, 0)
-
-        pwd = QLabel("Password :")
-        layout.addWidget(pwd, 2, 0)
-
-        self.input1 = QLineEdit()
-        layout.addWidget(self.input1, 1, 1)
-
-        self.input2 = QLineEdit()
-        self.input2.setEchoMode(QLineEdit.EchoMode.Password)
-        layout.addWidget(self.input2, 2, 1)
-
-        self.button1 = QPushButton("Login")
-        layout.addWidget(self.button1, 3, 1)
-
-        self.button1.clicked.connect(self.login)
+        self.login_button1.clicked.connect(self.login)
 
     def login(self):
         print(f'le token au début : {self.tokaccess}')
 
-        login   = self.input1.text()
-        mdp     = self.input2.text()
+        login   = self.login_input1.text()
+        mdp     = self.login_input2.text()
         logedin = False
 
         x = requests.post(f'http://127.0.0.1:8000/login',
@@ -77,8 +51,7 @@ class Login_page(QtWidgets.QWidget):
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
         super(Index_page, self).__init__()
-        # ...
-        self.prevButton = QtWidgets.QPushButton('Previous')
+        
 
     def doSomethingNext(self):
         print("mon fiak")
