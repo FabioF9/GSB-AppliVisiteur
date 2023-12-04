@@ -28,7 +28,7 @@ def get_rapport(id: int, db: Session = Depends(get_db)):
     return rapport
 
 
-@router.get('/rapport/visiteur/{vis_id}', response_model=schemas.Rapport)
+@router.get('/rapport/visiteur/{vis_id}', response_model=schemas.showRapport)
 def get_rapport_by_vis_matricule(vis_id: int, db: Session = Depends(get_db)):
     rapport = db.query(models.Rapport_Visite).filter(
         models.Rapport_Visite.VIS_MATRICULE == vis_id).first()
