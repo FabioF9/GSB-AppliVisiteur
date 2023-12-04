@@ -1,52 +1,54 @@
 from typing import List
+from datetime import datetime, date
 from pydantic import BaseModel
 
-class BlogBase(BaseModel):
-    title:str
-    body:str
-
-class Blog(BlogBase):
-    class Config():
-        orm_mode = True
-
-class User(BaseModel):
-    name:str
-    email:str
-    password:str
-
-class ShowUserBlogs(BaseModel):
-    name:str
-    email:str
-
-class ShowUser(BaseModel):
-    name:str
-    email:str 
-    blogs:List[Blog] = []
-    class Config():
-        orm_mode = True
-    
-
-class ShowBlog(BaseModel):
-    title: str
-    body:str
-    creator: ShowUserBlogs
-
-    class Config():
-        orm_mode = True
 
 class Medecin(BaseModel):
-    nom : str
-    spe : str
-    ville : str
+    MED_NOM : str
+    MED_PRENOM : str
+    MED_ADRESSE : str
+    MED_CP : str
+    MED_VILLE : str
 
 class Rapport(BaseModel):
     # RAP_NUM : int
-    RAP_DATE : str
+    RAP_DATE : date
     RAP_BILAN : str
     RAP_MOTIF : str
     RAP_COMMENTAIRE : str
     # user_id : int
 
+class Visiteur (BaseModel):
+
+    VIS_NOM : str
+    VIS_ADRESSE : str 
+    VIS_CP : int
+    VIS_VILLE : str
+    VIS_DATEEMBAUCHE : date
+    LOG_LOGIN : str
+    LOG_MDP : str
+
+class showVisiteur(BaseModel):
+    LOG_LOGIN : str
+    rapport : List [Rapport] = []
+
+class showRapportCreator(BaseModel):
+
+    VIS_MATRICULE : int
+    VIS_NOM : str
+    VIS_ADRESSE : str 
+    VIS_CP : int
+    VIS_VILLE : str
+    VIS_DATEEMBAUCHE : date
+
+
+class showRapport (BaseModel):
+    RAP_DATE : date
+    RAP_BILAN : str
+    RAP_MOTIF : str
+    RAP_COMMENTAIRE : str
+
+    creator : showRapportCreator
 
 class Login(BaseModel):
     username: str
