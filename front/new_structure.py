@@ -44,7 +44,8 @@ class Login_page(QtWidgets.QWidget):
             logedin = True
             self.tokaccess = x.json()[0]['access_token']
             print(f'le token au apres une réussite : {self.tokaccess}')
-            appStack.setCurrentWidget(appStack.index_page)
+            # appStack.setCurrentWidget(appStack.index_page)
+            appStack.launchIndex(self.tokaccess,x.json()[1])
         else:
             print('Username or Password are wrong !')
 
@@ -55,11 +56,27 @@ class Login_page(QtWidgets.QWidget):
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
         super(Index_page, self).__init__()
-        loadUi("main.ui", self)
+        loadUi("ui/new_index.ui", self)
+        self.index_to_rapport.clicked.connect(self.goToRapport)
 
     def doSomethingNext(self):
-        print("coucou")
+        self.setRapportList()
 
+    def setRapportList(self):
+        print( requests.get(f'http://127.0.0.1:8000/rapports').json())
+        print( requests.get(f'http://127.0.0.1:8000/rapport/visiteur/1').json())
+        # all_rapports = request.json()
+        # print(all_rapports)
+        # for rapport in all_rapports:
+        #     self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
+        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
+        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['RAP_COMMENTAIRE']))
+        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
+        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
+        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 4, QtWidgets.QTableWidgetItem('OWO'))
+
+    def goToRapport(self):
+        appStack.setCurrentWidget(appStack.Rapport_page)
 
     """docstring for Index_page"""
     # def __init__(self):
@@ -78,6 +95,11 @@ class Index_page(QtWidgets.QWidget):
         # self.List.addItem(fake)        
         # self.button1.clicked.connect(self.createDr)
 
+class Rapport_page(QtWidgets.QWidget):
+    def __init__(self):
+        super(Index_page, self).__init__()
+        loadUi("ui/new_rapport.ui", self)
+
 
 class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
@@ -85,9 +107,9 @@ class Stack(QtWidgets.QStackedWidget):
         # Index 0
         self.login_page = Login_page()
         # Index 1
-        self.index_page = Index_page()
+        # self.index_page = Index_page()
         self.addWidget(self.login_page)
-        self.addWidget(self.index_page)
+        # self.addWidget(self.index_page)
         self.initCurrent()
         self.currentChanged.connect(self.initCurrent)
 
@@ -100,6 +122,14 @@ class Stack(QtWidgets.QStackedWidget):
     def initCurrent(self):
         if self.currentWidget():
             self.currentWidget().doSomethingNext()
+
+    def launchIndex(self,access_token,id_user):
+        self.user = User(access_token,id_user)
+        self.index_page = Index_page()
+        # self.rapport_page = Rapport_page()
+        self.addWidget(self.index_page)
+        # self.addWidget(self.Rapport_page)
+        self.setCurrentWidget(self.index_page)
 
 if __name__ == "__main__":
     

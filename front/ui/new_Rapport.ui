@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>760</width>
+    <height>510</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QTextEdit" name="rapport_comm"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QComboBox" name="rapport_medecins"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QComboBox" name="rapport_motif">
+     <item>
+      <property name="text">
+       <string>Visite</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Nouveauté</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Périodicité</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Actualisation</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Autre</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLineEdit" name="rapport_motif_autre">
+     <property name="placeholderText">
+      <string>Autre cas de motif</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QComboBox" name="rapport_medoc1">
+     <item>
+      <property name="text">
+       <string>Alphasium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Betasium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Deltasium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Gammasium</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QSpinBox" name="rapport_medoc1_nbr">
+     <property name="maximum">
+      <number>2</number>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QComboBox" name="rapport_medoc2">
+     <item>
+      <property name="text">
+       <string>Alphasium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Betasium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Deltasium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Gammasium</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QSpinBox" name="rapport_medoc2_nbr">
+     <property name="maximum">
+      <number>2</number>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QComboBox" name="rapport_bilan">
+     <item>
+      <property name="text">
+       <string>Acheté</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pas Acheté</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QPushButton" name="rapport_to_index">
+      <property name="text">
+       <string>Retour Index</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="rapport_datas">
+      <property name="text">
+       <string>Envoyer</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

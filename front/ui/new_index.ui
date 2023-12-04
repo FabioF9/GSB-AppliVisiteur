@@ -6,64 +6,97 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>483</width>
-    <height>390</height>
+    <width>864</width>
+    <height>542</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>864</width>
+    <height>542</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>20</y>
-     <width>160</width>
-     <height>351</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPushButton" name="pushButton_3">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QSplitter" name="splitter">
+     <property name="minimumSize">
+      <size>
+       <width>577</width>
+       <height>396</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QTableWidget" name="index_tableau_rapports">
       <property name="minimumSize">
        <size>
-        <width>0</width>
-        <height>80</height>
+        <width>609</width>
+        <height>558</height>
        </size>
       </property>
-      <property name="text">
-       <string>Créer un rapport</string>
-      </property>
+      <column>
+       <property name="text">
+        <string>Date</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Medecin</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Motif</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Bilan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Actions</string>
+       </property>
+      </column>
      </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Voir un rapport</string>
-      </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="index_to_rapport">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Créer un rapport</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="index_boutton_message">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Envoyer un message</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>80</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Historique</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

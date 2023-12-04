@@ -83,7 +83,7 @@ class Screen2(QMainWindow):
         super().__init__()
         self.tokaccess = ""
         super(Screen2, self).__init__()
-        loadUi("main.ui", self)
+        loadUi("ui/main.ui", self)
         # self.access_token = Window.access_token
         # print(self.access_token)
         # headers = {"Authorization": f"Bearer {access_token}"}
@@ -153,7 +153,7 @@ class CpRendu(QMainWindow):
         super().__init__()
         self.tokaccess = ""
         super(CpRendu, self).__init__()
-        loadUi("CpRendu.ui", self)
+        loadUi("ui/CpRendu.ui", self)
         self.insert_medecins()
         self.CpRendu_test.clicked.connect(self.test)
         self.bouton_retour.clicked.connect(self.retour_acceuil)
@@ -195,7 +195,7 @@ class ViewPdf(QMainWindow):
         super().__init__()
         self.tokaccess = ""
         super(ViewPdf, self).__init__()
-        loadUi("ViewRapport.ui", self)
+        loadUi("ui/ViewRapport.ui", self)
         self.view_retour.clicked.connect(self.retour_acceuil)
     
     def retour_acceuil(self):
