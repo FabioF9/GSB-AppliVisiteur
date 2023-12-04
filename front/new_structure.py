@@ -17,11 +17,12 @@ class User():
     def getUserDatas(self):
         x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
 
+
 # Index 0
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
         super(Login_page, self).__init__()
-        loadUi("new_login.ui", self)
+        loadUi("ui/new_login.ui", self)
         self.login_button1.clicked.connect(self.login)
 
     def login(self):
@@ -54,10 +55,10 @@ class Login_page(QtWidgets.QWidget):
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
         super(Index_page, self).__init__()
-        
+        loadUi("main.ui", self)
 
     def doSomethingNext(self):
-        print("mon fiak")
+        print("coucou")
 
 
     """docstring for Index_page"""
