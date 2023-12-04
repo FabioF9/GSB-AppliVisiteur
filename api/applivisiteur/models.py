@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
-from .database import Base 
+from .database import Base
 from sqlalchemy.orm import relationship
 
 
@@ -19,6 +19,7 @@ class Visiteur(Base):
 
     rapport = relationship('Rapport_Visite', back_populates="creator")
 
+
 class Secteur(Base):
     __tablename__ = "Secteur"
 
@@ -26,6 +27,7 @@ class Secteur(Base):
     SEC_LIBELLE = Column(String)
 
     region = relationship('Region', back_populates="secteur")
+
 
 class Region(Base):
     __tablename__ = "Region"
@@ -35,6 +37,7 @@ class Region(Base):
     SEC_CODE = Column(Integer, ForeignKey('Secteur.SEC_CODE'))
 
     secteur = relationship('Secteur', back_populates="region")
+
 
 class Medecin(Base):
     __tablename__ = "Medecin"
@@ -47,8 +50,9 @@ class Medecin(Base):
     MED_VILLE = Column(String)
     TYP_ID = Column(String, ForeignKey('Type_Medecin.TYP_ID'))
 
-    type = relationship('Type_Medecin',back_populates="medecin")
+    type = relationship('Type_Medecin', back_populates="medecin")
     rapport_med = relationship('Rapport_Visite', back_populates="affiliate_med")
+
 
 class Type_Medecin(Base):
     __tablename__ = "Type_Medecin"
@@ -58,7 +62,7 @@ class Type_Medecin(Base):
     TYP_LIEU = Column(String)
 
     medecin = relationship('Medecin', back_populates="type")
-    
+
 
 class Rapport_Visite(Base):
     __tablename__ = "Rapport_Visite"
@@ -68,7 +72,7 @@ class Rapport_Visite(Base):
     RAP_BILAN = Column(String)
     RAP_MOTIF = Column(String)
     RAP_COMMENTAIRE = Column(String)
-    VIS_MATRICULE = Column(String, ForeignKey('Visiteur.VIS_MATRICULE'))
+    VIS_MATRICULE = Column(Integer, ForeignKey('Visiteur.VIS_MATRICULE'))
     MED_ID = Column(Integer, ForeignKey('Medecin.MED_ID'))
 
     creator = relationship('Visiteur', back_populates="rapport")
@@ -88,16 +92,19 @@ class Medicaments(Base):
     MEDI_PRIX = Column(Integer)
     MEDI_STOCK = Column(String)
 
-    echantillon = relationship('Echantillons', back_populates="medicament_echantillon")
+    echantillon = relationship(
+        'Echantillons', back_populates="medicament_echantillon")
+
 
 class Echantillons(Base):
     __tablename__ = "Echantillons"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     ECH_NOMBRE = Column(Integer)
     RAP_NUM = Column(Integer, ForeignKey('Rapport_Visite.RAP_NUM'))
     MEDI_ID = Column(Integer, ForeignKey('Medicaments.MEDI_ID'))
 
-    rapport_echantillon = relationship('Rapport_Visite', back_populates="affiliate_echantillon")
-    medicament_echantillon = relationship('Medicaments', back_populates="echantillon")
-
+    rapport_echantillon = relationship(
+        'Rapport_Visite', back_populates="affiliate_echantillon")
+    medicament_echantillon = relationship(
+        'Medicaments', back_populates="echantillon")
