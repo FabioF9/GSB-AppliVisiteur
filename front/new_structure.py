@@ -63,17 +63,15 @@ class Index_page(QtWidgets.QWidget):
         self.setRapportList()
 
     def setRapportList(self):
-        print( requests.get(f'http://127.0.0.1:8000/rapports').json())
-        print( requests.get(f'http://127.0.0.1:8000/rapport/visiteur/1').json())
-        # all_rapports = request.json()
-        # print(all_rapports)
-        # for rapport in all_rapports:
-        #     self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
-        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
-        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['RAP_COMMENTAIRE']))
-        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
-        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
-        #     self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 4, QtWidgets.QTableWidgetItem('OWO'))
+        request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}')
+        all_rapports = request.json()
+        for rapport in all_rapports:
+            self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['RAP_COMMENTAIRE']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 4, QtWidgets.QTableWidgetItem('OWO'))
 
     def goToRapport(self):
         appStack.setCurrentWidget(appStack.Rapport_page)
