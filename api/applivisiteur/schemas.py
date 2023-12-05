@@ -10,6 +10,14 @@ class Medecin(BaseModel):
     MED_CP: str
     MED_VILLE: str
 
+class showMedecin(BaseModel):
+    MED_ID : int
+    MED_NOM: str
+    MED_PRENOM: str
+    MED_ADRESSE: str
+    MED_CP: str
+    MED_VILLE: str
+
 
 class Rapport(BaseModel):
     # RAP_NUM : int
@@ -17,6 +25,7 @@ class Rapport(BaseModel):
     RAP_BILAN: str
     RAP_MOTIF: str
     RAP_COMMENTAIRE: str
+    MED_ID : int 
     # user_id : int
 
 
