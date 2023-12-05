@@ -20,7 +20,7 @@ def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db)):
     return new_medecin
 
 
-@router.get('/medecin/{id}', response_model=schemas.Medecin)
+@router.get('/medecin/{id}', response_model=schemas.showMedecin)
 def get_user(id: int, db: Session = Depends(get_db)):
     medecin = db.query(models.Medecin).filter(
         models.Medecin.MED_ID == id).first()
@@ -30,7 +30,7 @@ def get_user(id: int, db: Session = Depends(get_db)):
     return medecin
 
 
-@router.get('/medecins', response_model=List[schemas.Medecin])
+@router.get('/medecins', response_model=List[schemas.showMedecin])
 def all(db: Session = Depends(get_db)):
     medecins = db.query(models.Medecin).all()
     if not medecins:
