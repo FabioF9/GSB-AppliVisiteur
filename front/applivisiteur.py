@@ -97,6 +97,8 @@ class Screen2(QMainWindow):
         self.calendar.setGridVisible(True);
 
     def set_list(self):
+        while self.tableWidget.rowCount() > 0:
+            self.tableWidget.removeRow(0)
         x = requests.get('http://127.0.0.1:8000/medecins')
         lstMedecins = x.json()        
         for medecin in lstMedecins:

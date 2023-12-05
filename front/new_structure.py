@@ -63,6 +63,8 @@ class Index_page(QtWidgets.QWidget):
         self.setRapportList()
 
     def setRapportList(self):
+        while self.index_tableau_rapports.rowCount() > 0:
+            self.index_tableau_rapports.removeRow(0)
         request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}')
         all_rapports = request.json()
         for rapport in all_rapports:
@@ -74,7 +76,7 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 4, QtWidgets.QTableWidgetItem('OWO'))
 
     def goToRapport(self):
-        appStack.setCurrentWidget(appStack.Rapport_page)
+        appStack.setCurrentWidget(appStack.rapport_page)
 
     """docstring for Index_page"""
     # def __init__(self):
@@ -95,9 +97,39 @@ class Index_page(QtWidgets.QWidget):
 
 class Rapport_page(QtWidgets.QWidget):
     def __init__(self):
-        super(Index_page, self).__init__()
+        super(Rapport_page, self).__init__()
         loadUi("ui/new_rapport.ui", self)
+        self.rapport_to_index.clicked.connect(self.goToIndex)
 
+    def doSomethingNext(self):
+        print("coucou")
+
+    def goToIndex(self):
+        appStack.setCurrentWidget(appStack.index_page)
+
+    def sendRapport(self):
+        print("fnct sendRapport")
+
+    # def test(self):
+    #     print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
+    #     print("le nom actuel  : "+self.CpRendu_medecins.currentText())
+    #     if self.CpRendu_motif.currentText() == "Autre":
+    #        motif = self.CpRendu_motif_autre.text()
+    #        print("le motif actuel : "+self.CpRendu_motif_autre.text())
+    #     else:
+    #         motif = self.CpRendu_motif.currentText()
+    #         print("le motif actuel : "+self.CpRendu_motif.currentText())
+    #     commentaire = self.CpRendu_commentaire.toPlainText()
+    #     print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
+    #     print("la date actuel : "+todayFr)
+    #     titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
+    #     print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
+    #     x = requests.post('http://127.0.0.1:8000/create_rapport', json={
+    #         "RAP_DATE":todayFr,
+    #         "RAP_BILAN":titre,
+    #         "RAP_MOTIF":motif,
+    #         "RAP_COMMENTAIRE":commentaire
+    #         })
 
 class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
@@ -124,9 +156,10 @@ class Stack(QtWidgets.QStackedWidget):
     def launchIndex(self,access_token,id_user):
         self.user = User(access_token,id_user)
         self.index_page = Index_page()
+        self.rapport_page = Rapport_page()
         # self.rapport_page = Rapport_page()
         self.addWidget(self.index_page)
-        # self.addWidget(self.Rapport_page)
+        self.addWidget(self.rapport_page)
         self.setCurrentWidget(self.index_page)
 
 if __name__ == "__main__":
