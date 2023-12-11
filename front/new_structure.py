@@ -14,10 +14,10 @@ class User():
     def __init__(self, access_token, user_id):
         self.access_token = access_token
         self.id = user_id
+        self.headers = {"Authorization": f"Bearer {self.access_token}"} 
 
     def getUserDatas(self):
         x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
-
 
 # Index 0
 class Login_page(QtWidgets.QWidget):
@@ -66,7 +66,7 @@ class Index_page(QtWidgets.QWidget):
     def setRapportList(self):
         while self.index_tableau_rapports.rowCount() > 0:
             self.index_tableau_rapports.removeRow(0)
-        request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}')
+        request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         all_rapports = request.json()
         for rapport in all_rapports:
             self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
@@ -79,22 +79,6 @@ class Index_page(QtWidgets.QWidget):
     def goToRapport(self):
         appStack.setCurrentWidget(appStack.rapport_page)
 
-    """docstring for Index_page"""
-    # def __init__(self):
-    #     super(Index_page, self).__init__()
-
-        # self.tokaccess = ""
-        # # super(Index_page, self).__init__()
-        # loadUi("main.ui", self)
-        # self.access_token = Window.access_token
-        # print(self.access_token)
-        # headers = {"Authorization": f"Bearer {access_token}"}
-        # x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
-        # x = requests.get('http://127.0.0.1:8000/medecins')
-        # jason = x.json()
-        # fake = json.dumps(jason)
-        # self.List.addItem(fake)        
-        # self.button1.clicked.connect(self.createDr)
 
 class Rapport_page(QtWidgets.QWidget):
     def __init__(self):
@@ -104,8 +88,7 @@ class Rapport_page(QtWidgets.QWidget):
         self.rapport_datas.clicked.connect(self.sendRapport)
 
     def doSomethingNext(self):
-        print("coucou")
-        queryMedecins = requests.get("http://127.0.0.1:8000/medecins")
+        queryMedecins = requests.get("http://127.0.0.1:8000/medecins", headers=appStack.user.headers)
         jsonMedecins = queryMedecins.json()
         for medecin in jsonMedecins:
             self.rapport_medecins.addItem(medecin['MED_NOM']+' '+medecin['MED_PRENOM'],medecin['MED_ID'])
@@ -133,8 +116,8 @@ class Rapport_page(QtWidgets.QWidget):
             "RAP_MOTIF":motif,
             "RAP_COMMENTAIRE":commentaire,
             "MED_ID": med_id,
-            "VIS_MATRICULE": int(appStack.user.id)
-            })     
+            "VIS_MATRICULE": appStack.user.id
+            },headers=appStack.user.headers)     
 
         print("fnct sendRapport")
 
@@ -195,7 +178,7 @@ if __name__ == "__main__":
     
 
     today = date.today()
-    todayFr = today.strftime("%d/%m/%Y")
+    todayFr = today.strftime("%Y-%m-%d")
     app = QApplication(sys.argv)
     appStack = Stack()
     appStack.show()

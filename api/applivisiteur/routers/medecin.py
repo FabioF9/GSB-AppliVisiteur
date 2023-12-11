@@ -10,8 +10,7 @@ get_db = database.get_db
 
 
 @router.post('/create_medecin', response_model=schemas.Medecin)
-# def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db),current_user: schemas.User = Depends(oauth2.get_current_user)):
-def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db)):
+def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     new_medecin = models.Medecin(MED_NOM=request.MED_NOM, MED_PRENOM=request.MED_PRENOM,
                                  MED_ADRESSE=request.MED_ADRESSE, MED_CP=request.MED_CP, MED_VILLE=request.MED_VILLE)
     db.add(new_medecin)
@@ -21,7 +20,7 @@ def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db)):
 
 
 @router.get('/medecin/{id}', response_model=schemas.showMedecin)
-def get_user(id: int, db: Session = Depends(get_db)):
+def get_user(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     medecin = db.query(models.Medecin).filter(
         models.Medecin.MED_ID == id).first()
     if not medecin:
@@ -31,7 +30,7 @@ def get_user(id: int, db: Session = Depends(get_db)):
 
 
 @router.get('/medecins', response_model=List[schemas.showMedecin])
-def all(db: Session = Depends(get_db)):
+def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     medecins = db.query(models.Medecin).all()
     if not medecins:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -40,7 +39,7 @@ def all(db: Session = Depends(get_db)):
 
 
 @router.delete('/delete_medecin/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def destroy(id, db: Session = Depends(get_db), current_user: schemas.Medecin = Depends(oauth2.get_current_user)):
+def destroy(id, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     medecin = db.query(models.Medecin).filter(models.Medecin.MED_ID == id)
 
     if not medecin.first():
@@ -52,7 +51,7 @@ def destroy(id, db: Session = Depends(get_db), current_user: schemas.Medecin = D
 
 
 @router.put('/update_medecin/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id, request: schemas.Medecin, db: Session = Depends(get_db)):
+def update(id, request: schemas.Medecin, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     medecin = db.query(models.Medecin).filter(models.Medecin.MED_ID == id)
     if not medecin.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

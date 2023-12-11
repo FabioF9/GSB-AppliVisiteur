@@ -187,7 +187,8 @@ class CpRendu(QMainWindow):
             "RAP_DATE":todayFr,
             "RAP_BILAN":titre,
             "RAP_MOTIF":motif,
-            "RAP_COMMENTAIRE":commentaire
+            "RAP_COMMENTAIRE":commentaire,
+            "MED_ID":
             })
 
         
