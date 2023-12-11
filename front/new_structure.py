@@ -2,6 +2,7 @@ import sys
 import typing
 import requests
 import json
+from datetime import date
 from PyQt6 import QtWidgets
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt
@@ -100,15 +101,43 @@ class Rapport_page(QtWidgets.QWidget):
         super(Rapport_page, self).__init__()
         loadUi("ui/new_rapport.ui", self)
         self.rapport_to_index.clicked.connect(self.goToIndex)
+        self.rapport_datas.clicked.connect(self.sendRapport)
 
     def doSomethingNext(self):
         print("coucou")
+        queryMedecins = requests.get("http://127.0.0.1:8000/medecins")
+        jsonMedecins = queryMedecins.json()
+        for medecin in jsonMedecins:
+            self.rapport_medecins.addItem(medecin['MED_NOM']+' '+medecin['MED_PRENOM'],medecin['MED_ID'])
 
     def goToIndex(self):
         appStack.setCurrentWidget(appStack.index_page)
 
     def sendRapport(self):
+        print(str(self.rapport_medecins.currentText()))
+        med_id = self.rapport_medecins.itemData(self.rapport_medecins.currentIndex())
+        if self.rapport_motif.currentText() == "Autre":
+           motif = self.rapport_motif_autre.text()
+           print("le motif actuel : "+self.rapport_motif_autre.text())
+        else:
+            motif = self.rapport_motif.currentText()
+            print("le motif actuel : "+self.rapport_motif.currentText())
+        commentaire = self.rapport_comm.toPlainText()
+        bilan = self.rapport_bilan.currentText()
+        print(commentaire)
+        print("la date actuel : "+todayFr)
+
+        create_rapport = requests.post('http://127.0.0.1:8000/create_rapport', json={
+            "RAP_DATE":todayFr,
+            "RAP_BILAN":bilan,
+            "RAP_MOTIF":motif,
+            "RAP_COMMENTAIRE":commentaire,
+            "MED_ID": med_id,
+            "VIS_MATRICULE": int(appStack.user.id)
+            })     
+
         print("fnct sendRapport")
+
 
     # def test(self):
     #     print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
@@ -164,6 +193,9 @@ class Stack(QtWidgets.QStackedWidget):
 
 if __name__ == "__main__":
     
+
+    today = date.today()
+    todayFr = today.strftime("%d/%m/%Y")
     app = QApplication(sys.argv)
     appStack = Stack()
     appStack.show()

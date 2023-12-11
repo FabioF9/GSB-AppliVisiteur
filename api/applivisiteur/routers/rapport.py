@@ -41,7 +41,7 @@ def get_rapport_by_vis_matricule(vis_id: int, db: Session = Depends(get_db)):
 @router.post('/create_rapport', response_model=schemas.Rapport)
 def create_rapport(request: schemas.Rapport, db: Session = Depends(get_db)):
     new_rapport = models.Rapport_Visite(RAP_DATE=request.RAP_DATE, RAP_BILAN=request.RAP_BILAN,
-                                        RAP_MOTIF=request.RAP_MOTIF, RAP_COMMENTAIRE=request.RAP_COMMENTAIRE, VIS_MATRICULE=1)
+                                        RAP_MOTIF=request.RAP_MOTIF, RAP_COMMENTAIRE=request.RAP_COMMENTAIRE, MED_ID=request.MED_ID ,VIS_MATRICULE=request.VIS_MATRICULE)
     db.add(new_rapport)
     db.commit()
     db.refresh(new_rapport)

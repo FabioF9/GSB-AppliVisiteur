@@ -25,8 +25,8 @@ class Rapport(BaseModel):
     RAP_BILAN: str
     RAP_MOTIF: str
     RAP_COMMENTAIRE: str
-    MED_ID : int 
-    # user_id : int
+    MED_ID : int
+    VIS_MATRICULE : int
 
 
 class Visiteur (BaseModel):
