@@ -74,10 +74,10 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.removeRow(0)
         request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         all_rapports = request.json()
+        print(all_rapports)
         button_dict = {}
         suppr_dict = {}
         for rapport in all_rapports:
-            # print(rapport)
             button_dict[f'index_button{rapport["RAP_NUM"]}'] = QPushButton("afficher")
             suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
             # test_dict[f'index_test{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
@@ -88,9 +88,14 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, button_dict[f'index_button{rapport["RAP_NUM"]}'])
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 6, QtWidgets.QTableWidgetItem(str(rapport["RAP_NUM"])))
+            # print(f'suppr_dict[index_suppr{rapport["RAP_NUM"]}].clicked.connect(lambda: self.suppr(str({rapport["RAP_NUM"]})))')
+            # suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'].clicked.connect(lambda: self.suppr(str(rapport["RAP_NUM"])))
+            currentButton = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
+            currentButton.clicked.connect(lambda: self.suppr(rapport["RAP_NUM"]))
+
 
             # button_dict[f'index_button{rapport["RAP_NUM"]}'].clicked.connect(CreerPresentation("test","test2"))
-            suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'].clicked.connect(self.suppr)
 
         # for boutton in button_dict:
         #     button_dict[boutton].clicked.connect(self.caca)
@@ -100,9 +105,10 @@ class Index_page(QtWidgets.QWidget):
     def goToRapport(self):
         appStack.setCurrentWidget(appStack.rapport_page)
 
-    def suppr():
-        
-        return True
+    def suppr(self,id_RAP):
+        # print("test")
+        delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
+        self.setRapportList()
 
 
 

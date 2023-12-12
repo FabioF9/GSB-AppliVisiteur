@@ -64,6 +64,11 @@
        <string>Suppr</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item row="3" column="0">
