@@ -89,10 +89,8 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, button_dict[f'index_button{rapport["RAP_NUM"]}'])
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 6, QtWidgets.QTableWidgetItem(str(rapport["RAP_NUM"])))
-            # print(f'suppr_dict[index_suppr{rapport["RAP_NUM"]}].clicked.connect(lambda: self.suppr(str({rapport["RAP_NUM"]})))')
-            # suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'].clicked.connect(lambda: self.suppr(str(rapport["RAP_NUM"])))
             currentButton = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
-            currentButton.clicked.connect(lambda: self.suppr(rapport["RAP_NUM"]))
+            currentButton.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
 
 
             # button_dict[f'index_button{rapport["RAP_NUM"]}'].clicked.connect(CreerPresentation("test","test2"))
