@@ -1,5 +1,7 @@
 def CreerPresentation(Praticien,Medicament1,Medicament2):
     import os
+    import subprocess
+    import sys
 
 
 
@@ -10,7 +12,7 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
     PDFTitle = "Fiche de présentation"
     fileName = 'GSB_Applivisiteur_Fiche_de_présentation.pdf'
     documentTitle = 'GSB Applivisiteur - Fiche de présentation'
-    image = "./pdf/image/gsb.png"
+    # image = "./pdf/image/gsb.png"
     #image = "image/gsb.png"
     footer = "2022 GSB Applivsiteur"
 
@@ -18,17 +20,17 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
 
     Title = "Médicament(s) :"
 
-    LabelMedicaments1 = Medicament1["Label"]
-    Composition1 = Medicament1["Composition"]
-    Effet1 = Medicament1["Effets"]
-    CI1 = Medicament1["ContreIndic"]
-    Prix1 = Medicament1["Prix"]
+    LabelMedicaments1 = Medicament1
+    Composition1 = Medicament1
+    Effet1 = Medicament1
+    CI1 = Medicament1
+    Prix1 = Medicament1
 
-    LabelMedicaments2 = Medicament2["Label"]
-    Composition2 = Medicament2["Composition"]
-    Effet2 = Medicament2["Effets"]
-    CI2 = Medicament2["ContreIndic"]
-    Prix2 = Medicament2["Prix"]
+    LabelMedicaments2 = Medicament2
+    Composition2 = Medicament2
+    Effet2 = Medicament2
+    CI2 = Medicament2
+    Prix2 = Medicament2
 
     textMedicament1 = [f'Composition : {Composition1}',f'Effet(s) : {Effet1}',f'Contre-indication(s) : {CI1}',f'Prix : {Prix1}']
     textMedicament2 = [f'Composition : {Composition2}',f'Effet(s) : {Effet2}',f'Contre-indication(s) : {CI2}',f'Prix : {Prix2}']
@@ -47,7 +49,7 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
     pdf = canvas.Canvas(path + fileName)
     pdf.setTitle(documentTitle)
     y = 740
-    pdf.drawImage(image, 40, y, width=121, height=67)
+    # pdf.drawImage(image, 40, y, width=121, height=67)
 
     from reportlab.pdfbase.ttfonts import TTFont
     from reportlab.pdfbase import pdfmetrics
@@ -86,7 +88,7 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
     text.setFont("Helvetica", 18)
     text.textLine(LabelMedicaments1)
     text.moveCursor(14,20)
-    pdf.line(40,595,40+float(len(Medicament1["Label"])*8.5),595)
+    pdf.line(40,595,40+float(len(Medicament1)*8.5),595)
     for line in textMedicament1:
         text.textLine(line)
     pdf.drawText(text)
@@ -96,7 +98,7 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
     text.setFont("Helvetica", 18)
     text.textLine(LabelMedicaments2)
     text.moveCursor(14, 20)
-    pdf.line(40,445,40+float(len(Medicament2["Label"])*8.5),445)
+    pdf.line(40,445,40+float(len(Medicament2)*8.5),445)
     for line in textMedicament2:
         text.textLine(line)
     pdf.drawText(text)
@@ -106,9 +108,10 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
     text.textLine(footer)
     pdf.drawText(text)
 
-    pdf.showPage()
     pdf.save()
+    pdf.showPage()
     output = f"\"{path}{fileName}\""
+    subprocess.Popen([path+fileName], shell=True)
     return output
     #os.system(cmd)
 

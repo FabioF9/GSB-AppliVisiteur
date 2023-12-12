@@ -6,8 +6,9 @@ from datetime import date
 from PyQt6 import QtWidgets
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt
+
 from PyQt6.QtWidgets import (
-    QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow
+    QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow, QToolButton
 )
 
 class User():
@@ -56,6 +57,7 @@ class Login_page(QtWidgets.QWidget):
 # Index 1
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
+        
         super(Index_page, self).__init__()
         loadUi("ui/new_index.ui", self)
         self.index_to_rapport.clicked.connect(self.goToRapport)
@@ -63,18 +65,33 @@ class Index_page(QtWidgets.QWidget):
     def doSomethingNext(self):
         self.setRapportList()
 
+    def caca(self):
+        print("caca")
+
     def setRapportList(self):
+        from pdf.pdf import CreerPresentation
         while self.index_tableau_rapports.rowCount() > 0:
             self.index_tableau_rapports.removeRow(0)
         request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         all_rapports = request.json()
+        button_dict = {}
         for rapport in all_rapports:
+            # print(rapport)
+            button_dict[f'index_button{rapport["RAP_NUM"]}'] = QPushButton("afficher")
             self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['RAP_COMMENTAIRE']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
-            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 4, QtWidgets.QTableWidgetItem('OWO'))
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, button_dict[f'index_button{rapport["RAP_NUM"]}'])
+
+            button_dict[list(button_dict)[-1]].clicked.connect(CreerPresentation(rapport["affiliate_med"]["MED_NOM"],"test","test2"))
+
+
+        # for boutton in button_dict:
+        #     button_dict[boutton].clicked.connect(self.caca)
+            # print(boutton)
+
 
     def goToRapport(self):
         appStack.setCurrentWidget(appStack.rapport_page)

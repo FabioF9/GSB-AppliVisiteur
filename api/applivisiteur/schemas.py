@@ -58,6 +58,7 @@ class showRapportMedecin(BaseModel):
     MED_NOM: str
 
 class showRapport (BaseModel):
+    RAP_NUM: int
     RAP_DATE: date
     RAP_BILAN: str
     RAP_MOTIF: str

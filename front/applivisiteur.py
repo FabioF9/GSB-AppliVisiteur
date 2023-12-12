@@ -15,11 +15,17 @@ class Window(QWidget):
         # self.tokaccess = " test "
         self.access_token = ""
         super().__init__()
-        layout = QGridLayout()
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(10)
         self.setWindowTitle("Galaxy Swiss Bourdin")
+        layout = QGridLayout()
         self.setLayout(layout)
+        button1 = QPushButton("Login")
+        layout.addWidget(button1)
+
+
+
+
         self.access_token = ""
         # Dimensionnez la fenêtre en pixels (largeur, hauteur)
         self.resize(400, 200)
