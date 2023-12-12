@@ -57,7 +57,7 @@ class Login_page(QtWidgets.QWidget):
 # Index 1
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
-        
+        from pdf.pdf import CreerPresentation
         super(Index_page, self).__init__()
         loadUi("ui/new_index.ui", self)
         self.index_to_rapport.clicked.connect(self.goToRapport)
@@ -88,9 +88,10 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, button_dict[f'index_button{rapport["RAP_NUM"]}'])
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
-            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 6, QtWidgets.QTableWidgetItem(str(rapport["RAP_NUM"])))
-            currentButton = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
-            currentButton.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
+            currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
+            currentButtonSuppr = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
+            currentButtonSuppr.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
+            currentButton.clicked.connect(lambda _, medecin=rapport["affiliate_med"]["MED_NOM"], medoc1="test",medoc2="test2": self.CreerPresentation(medecin,medoc1,medoc2))
 
 
             # button_dict[f'index_button{rapport["RAP_NUM"]}'].clicked.connect(CreerPresentation("test","test2"))
