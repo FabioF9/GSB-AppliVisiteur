@@ -1,4 +1,4 @@
-def CreerPresentation(Praticien,Medicament1,Medicament2):
+def CreerPresentation(Medicament1,Medicament2):
     import os
     import subprocess
     import sys
@@ -16,7 +16,7 @@ def CreerPresentation(Praticien,Medicament1,Medicament2):
     #image = "image/gsb.png"
     footer = "2022 GSB Applivsiteur"
 
-    textPraticien = f'Praticien : Dr. {Praticien}'
+    textPraticien = f'Praticien : Dr. docteur'
 
     Title = "Médicament(s) :"
 
@@ -119,4 +119,4 @@ if __name__ == '__main__':
     Praticien = f"Thomas Teynier"
     Medicament1 = {"Label" : "doliprane","Composition" : "truc machin", "Effets" : "test","ContreIndic" :"test", "Prix" : "test"}
     Medicament2 = {"Label" : "dolipranej","Composition" : "truc machin", "Effets" : "test","ContreIndic" :"test", "Prix" : "test"}
-    CreerPresentation(Praticien,Medicament1,Medicament2)
+    CreerPresentation(Medicament1,Medicament2)

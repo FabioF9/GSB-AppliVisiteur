@@ -60,7 +60,7 @@ def destroy(id, db: Session = Depends(get_db),current_user: schemas.Visiteur = D
     return 'done'
 
 @router.put('/update_rapport/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id, request: schemas.Rapport, db: Session = Depends(get_db)):
+def update(id, request: schemas.Rapport, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     rapport = db.query(models.Rapport_Visite).filter(models.Rapport_Visite.RAP_NUM == id)
     if not rapport.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
