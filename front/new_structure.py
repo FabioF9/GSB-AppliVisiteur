@@ -91,7 +91,8 @@ class Index_page(QtWidgets.QWidget):
             currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
             currentButtonSuppr = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
             currentButtonSuppr.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
-            currentButton.clicked.connect(lambda _, medecin=rapport["affiliate_med"]["MED_NOM"], medoc1="test",medoc2="test2": self.CreerPresentation(medecin,medoc1,medoc2))
+            # currentButton.clicked.connect(lambda _, medecin=rapport["affiliate_med"]["MED_NOM"], medoc1="test",medoc2="test2": CreerPresentation(medecin,medoc1,medoc2))
+            currentButton.clicked.connect(lambda: CreerPresentation("docteur","test1","test2"))
 
 
             # button_dict[f'index_button{rapport["RAP_NUM"]}'].clicked.connect(CreerPresentation("test","test2"))
