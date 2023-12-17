@@ -61,6 +61,7 @@ class Index_page(QtWidgets.QWidget):
         super(Index_page, self).__init__()
         loadUi("ui/new_index.ui", self)
         self.index_to_rapport.clicked.connect(self.goToRapport)
+        self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
 
     def doSomethingNext(self):
         self.setRapportList()
@@ -91,7 +92,7 @@ class Index_page(QtWidgets.QWidget):
             currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
             currentButtonSuppr = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
             currentButtonSuppr.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
-            currentButton.clicked.connect(lambda _, medecin=rapport["affiliate_med"]["MED_NOM"], medoc1="test",medoc2="test2": self.CreerPresentation(medecin,medoc1,medoc2))
+            currentButton.clicked.connect(lambda _, medecin=rapport["affiliate_med"]["MED_NOM"], medoc1="test",medoc2="test2": CreerPresentation(medecin,medoc1,medoc2))
 
 
             # button_dict[f'index_button{rapport["RAP_NUM"]}'].clicked.connect(CreerPresentation("test","test2"))
@@ -186,8 +187,12 @@ class Stack(QtWidgets.QStackedWidget):
         self.initCurrent()
         self.currentChanged.connect(self.initCurrent)
 
-    def goNext(self, target):
-        print(target)
+    def deconnection(self):
+        self.setCurrentWidget(appStack.login_page)
+        del self.user
+        del self.index_page
+        del self.rapport_page
+        print("")
 
     # def goPrev(self):
     #     self.set_current_screen()

@@ -74,7 +74,7 @@
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="index_boutton_message">
+      <widget class="QPushButton" name="index_bouton_message">
        <property name="minimumSize">
         <size>
          <width>150</width>
@@ -113,7 +113,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="index_bouton_deconnection">
        <property name="minimumSize">
         <size>
          <width>150</width>
@@ -121,7 +121,7 @@
         </size>
        </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>Déconnection</string>
        </property>
       </widget>
      </item>
