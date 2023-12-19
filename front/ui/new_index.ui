@@ -66,23 +66,20 @@
      </column>
      <column>
       <property name="text">
-       <string>ID</string>
+       <string>Editer</string>
       </property>
      </column>
     </widget>
    </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="index_bouton_message">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>80</height>
-        </size>
-       </property>
+     <item alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Envoyer un message</string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>logoGSBresize.png</pixmap>
        </property>
       </widget>
      </item>
@@ -96,19 +93,6 @@
        </property>
        <property name="text">
         <string>Créer un rapport</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>80</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>PushButton</string>
        </property>
       </widget>
      </item>
@@ -145,6 +129,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections/>
 </ui>
