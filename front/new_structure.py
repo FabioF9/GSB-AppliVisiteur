@@ -20,7 +20,7 @@ class User():
     def getUserDatas(self):
         x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
 
-# Index 0
+
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
         super(Login_page, self).__init__()
@@ -54,7 +54,7 @@ class Login_page(QtWidgets.QWidget):
     def doSomethingNext(self):
         print("début de l'application")
 
-# Index 1
+
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
         from pdf.pdf import CreerPresentation
@@ -65,9 +65,6 @@ class Index_page(QtWidgets.QWidget):
 
     def doSomethingNext(self):
         self.setRapportList()
-
-    def caca(self):
-        print("caca")
 
     def setRapportList(self):
         from pdf.pdf import CreerPresentation
@@ -173,27 +170,6 @@ class Rapport_page(QtWidgets.QWidget):
         self.goToIndex()
 
 
-    # def test(self):
-    #     print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
-    #     print("le nom actuel  : "+self.CpRendu_medecins.currentText())
-    #     if self.CpRendu_motif.currentText() == "Autre":
-    #        motif = self.CpRendu_motif_autre.text()
-    #        print("le motif actuel : "+self.CpRendu_motif_autre.text())
-    #     else:
-    #         motif = self.CpRendu_motif.currentText()
-    #         print("le motif actuel : "+self.CpRendu_motif.currentText())
-    #     commentaire = self.CpRendu_commentaire.toPlainText()
-    #     print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
-    #     print("la date actuel : "+todayFr)
-    #     titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
-    #     print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
-    #     x = requests.post('http://127.0.0.1:8000/create_rapport', json={
-    #         "RAP_DATE":todayFr,
-    #         "RAP_BILAN":titre,
-    #         "RAP_MOTIF":motif,
-    #         "RAP_COMMENTAIRE":commentaire
-    #         })
-
 class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
         super(Stack, self).__init__()
@@ -212,9 +188,6 @@ class Stack(QtWidgets.QStackedWidget):
         del self.index_page
         del self.rapport_page
         print("")
-
-    # def goPrev(self):
-    #     self.set_current_screen()
 
     def initCurrent(self):
         if self.currentWidget():
