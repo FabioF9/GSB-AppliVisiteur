@@ -66,6 +66,12 @@ class Index_page(QtWidgets.QWidget):
     def doSomethingNext(self):
         self.setRapportList()
 
+    def setUserDatas(self):
+        request = requests.get(f'http://127.0.0.1:8000/visiteur/{appStack.user.id}',headers=appStack.user.headers)
+        print(appStack.user.id)
+        print(f'les infos du user : {request.json()}')
+
+
     def setRapportList(self):
         from pdf.pdf import CreerPresentation
         while self.index_tableau_rapports.rowCount() > 0:
@@ -83,10 +89,10 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['affiliate_med']['MED_NOM']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
-            # self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 3, button_dict[f'index_button{rapport["RAP_NUM"]}'])
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
             self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, edit_dict[f'index_edit{rapport["RAP_NUM"]}'])
+
             currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
             currentButton.clicked.connect(lambda _, id_rapport=rapport["RAP_NUM"]: CreerPresentation(id_rapport))
 
@@ -95,6 +101,8 @@ class Index_page(QtWidgets.QWidget):
 
             currentButtonEdit = edit_dict[f'index_edit{rapport["RAP_NUM"]}'] 
             currentButtonEdit.clicked.connect(lambda _, RAP_NUM=rapport["RAP_NUM"]: self.editRapport(RAP_NUM))
+
+
 
     def editRapport(self,RAP_NUM):
         # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
