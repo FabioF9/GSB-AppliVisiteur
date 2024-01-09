@@ -1,22 +1,31 @@
-def CreerPresentation(Medicament1,Medicament2):
+def CreerPresentation(id_rapport):
+    import reportlab
+    from reportlab.pdfgen import canvas 
+    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle, Image
+    from reportlab.lib.styles import getSampleStyleSheet
     import os
     import subprocess
     import sys
+    import requests
 
+    Medicament1 = "test"
+    Medicament2 = "test2"
 
 
     # ###################################
     # Content
 
+    rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{id_rapport}')
+    rapport_infos = rapport_query.json()
+    print(rapport_infos)
 
-    PDFTitle = "Fiche de présentation"
-    fileName = 'GSB_Applivisiteur_Fiche_de_présentation.pdf'
+    PDFTitle = f"Fiche de présentation rapport {id_rapport}"
+    fileName = f'Fiche de présentation rapport {id_rapport}.pdf'
     documentTitle = 'GSB Applivisiteur - Fiche de présentation'
-    # image = "./pdf/image/gsb.png"
-    #image = "image/gsb.png"
-    footer = "2022 GSB Applivsiteur"
+    image = "pdf/logoGSB.png"
+    footer = "2023 GSB Applivsiteur"
 
-    textPraticien = f'Praticien : Dr. docteur'
+    textPraticien = f'Praticien : Dr. ' #{rapport_infos['affiliate_med']['MED_NOM']}'
 
     Title = "Médicament(s) :"
 
@@ -39,9 +48,7 @@ def CreerPresentation(Medicament1,Medicament2):
 
     # ###################################
     # 0) Create document 
-    from reportlab.pdfgen import canvas 
-    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle, Image
-    from reportlab.lib.styles import getSampleStyleSheet
+
 
     
     username = os.environ.get('USERNAME')
@@ -49,12 +56,12 @@ def CreerPresentation(Medicament1,Medicament2):
     pdf = canvas.Canvas(path + fileName)
     pdf.setTitle(documentTitle)
     y = 740
-    # pdf.drawImage(image, 40, y, width=121, height=67)
+    pdf.drawImage(image, 30, y, width=121, height=67)
 
     from reportlab.pdfbase.ttfonts import TTFont
     from reportlab.pdfbase import pdfmetrics
 
-    text = pdf.beginText(250, 750)
+    text = pdf.beginText(180, 750)
     text.setFont("Helvetica", 27)
     text.textLine(PDFTitle)
     pdf.drawText(text)
@@ -114,9 +121,3 @@ def CreerPresentation(Medicament1,Medicament2):
     subprocess.Popen([path+fileName], shell=True)
     return output
     #os.system(cmd)
-
-if __name__ == '__main__':
-    Praticien = f"Thomas Teynier"
-    Medicament1 = {"Label" : "doliprane","Composition" : "truc machin", "Effets" : "test","ContreIndic" :"test", "Prix" : "test"}
-    Medicament2 = {"Label" : "dolipranej","Composition" : "truc machin", "Effets" : "test","ContreIndic" :"test", "Prix" : "test"}
-    CreerPresentation(Medicament1,Medicament2)

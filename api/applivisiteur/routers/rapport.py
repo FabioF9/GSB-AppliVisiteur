@@ -19,7 +19,7 @@ def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(o
 
 
 @router.get('/rapport/{id}', response_model=schemas.Rapport)
-def get_rapport(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_rapport(id: int, db: Session = Depends(get_db)):
     rapport = db.query(models.Rapport_Visite).filter(
         models.Rapport_Visite.RAP_NUM == id).first()
     if not rapport:

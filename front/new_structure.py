@@ -20,7 +20,7 @@ class User():
     def getUserDatas(self):
         x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
 
-# Index 0
+
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
         super(Login_page, self).__init__()
@@ -41,8 +41,7 @@ class Login_page(QtWidgets.QWidget):
             "client_id":"",
             "client_secret":""
             })
-
-        if x.status_code==200:
+        if x.status_code == 200:
             logedin = True
             self.tokaccess = x.json()[0]['access_token']
             print(f'le token au apres une réussite : {self.tokaccess}')
@@ -54,19 +53,18 @@ class Login_page(QtWidgets.QWidget):
     def doSomethingNext(self):
         print("début de l'application")
 
-# Index 1
+
 class Index_page(QtWidgets.QWidget):
     def __init__(self):
-        
+        from pdf.pdf import CreerPresentation
         super(Index_page, self).__init__()
         loadUi("ui/new_index.ui", self)
         self.index_to_rapport.clicked.connect(self.goToRapport)
+        self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
+        self.setUserDatas()
 
     def doSomethingNext(self):
         self.setRapportList()
-
-    def caca(self):
-        print("caca")
 
     def setRapportList(self):
         from pdf.pdf import CreerPresentation
@@ -74,32 +72,43 @@ class Index_page(QtWidgets.QWidget):
             self.index_tableau_rapports.removeRow(0)
         request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         all_rapports = request.json()
-        print(all_rapports)
         button_dict = {}
         suppr_dict = {}
+        edit_dict = {}
         for rapport in all_rapports:
             button_dict[f'index_button{rapport["RAP_NUM"]}'] = QPushButton("afficher")
             suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
-            # test_dict[f'index_test{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
+            edit_dict[f'index_edit{rapport["RAP_NUM"]}'] = QPushButton("éditer")
             self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
-            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['RAP_COMMENTAIRE']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['affiliate_med']['MED_NOM']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
-            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
-            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, button_dict[f'index_button{rapport["RAP_NUM"]}'])
-            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
-            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 6, QtWidgets.QTableWidgetItem(str(rapport["RAP_NUM"])))
-            currentButton = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
-            currentButton.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
+            # self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 3, button_dict[f'index_button{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, edit_dict[f'index_edit{rapport["RAP_NUM"]}'])
+            currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
+            currentButton.clicked.connect(lambda _, id_rapport=rapport["RAP_NUM"]: CreerPresentation(id_rapport))
+
+            currentButtonSuppr = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
+            currentButtonSuppr.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
+
+            currentButtonEdit = edit_dict[f'index_edit{rapport["RAP_NUM"]}'] 
+            currentButtonEdit.clicked.connect(lambda _, RAP_NUM=rapport["RAP_NUM"]: self.editRapport(RAP_NUM))
+
+    def editRapport(self,RAP_NUM):
+        # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
+        rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
+        rapport_infos = rapport_query.json()
+        index_medecin = appStack.rapport_page.rapport_medecins.findData(rapport_infos['MED_ID'])
+        if ( index_medecin != -1 ):
+            appStack.rapport_page.rapport_medecins.setCurrentIndex(index_medecin)
+        appStack.rapport_page.rapport_comm.setText(rapport_infos['RAP_COMMENTAIRE'])
 
 
-            # button_dict[f'index_button{rapport["RAP_NUM"]}'].clicked.connect(CreerPresentation("test","test2"))
+        self.goToRapport()
 
-        # for boutton in button_dict:
-        #     button_dict[boutton].clicked.connect(self.caca)
-            # print(boutton)
-
-
+        
     def goToRapport(self):
         appStack.setCurrentWidget(appStack.rapport_page)
 
@@ -116,12 +125,19 @@ class Rapport_page(QtWidgets.QWidget):
         loadUi("ui/new_rapport.ui", self)
         self.rapport_to_index.clicked.connect(self.goToIndex)
         self.rapport_datas.clicked.connect(self.sendRapport)
+        self.setMedecins()
 
-    def doSomethingNext(self):
+    def setMedecins(self):
         queryMedecins = requests.get("http://127.0.0.1:8000/medecins", headers=appStack.user.headers)
         jsonMedecins = queryMedecins.json()
+        i = 0
         for medecin in jsonMedecins:
             self.rapport_medecins.addItem(medecin['MED_NOM']+' '+medecin['MED_PRENOM'],medecin['MED_ID'])
+            print(self.rapport_medecins.itemData(i))
+            i += 1
+
+    def doSomethingNext(self):
+        return False
 
     def goToIndex(self):
         appStack.setCurrentWidget(appStack.index_page)
@@ -149,29 +165,9 @@ class Rapport_page(QtWidgets.QWidget):
             "VIS_MATRICULE": appStack.user.id
             },headers=appStack.user.headers)     
 
-        print("fnct sendRapport")
 
+        self.goToIndex()
 
-    # def test(self):
-    #     print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
-    #     print("le nom actuel  : "+self.CpRendu_medecins.currentText())
-    #     if self.CpRendu_motif.currentText() == "Autre":
-    #        motif = self.CpRendu_motif_autre.text()
-    #        print("le motif actuel : "+self.CpRendu_motif_autre.text())
-    #     else:
-    #         motif = self.CpRendu_motif.currentText()
-    #         print("le motif actuel : "+self.CpRendu_motif.currentText())
-    #     commentaire = self.CpRendu_commentaire.toPlainText()
-    #     print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
-    #     print("la date actuel : "+todayFr)
-    #     titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
-    #     print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
-    #     x = requests.post('http://127.0.0.1:8000/create_rapport', json={
-    #         "RAP_DATE":todayFr,
-    #         "RAP_BILAN":titre,
-    #         "RAP_MOTIF":motif,
-    #         "RAP_COMMENTAIRE":commentaire
-    #         })
 
 class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
@@ -185,11 +181,12 @@ class Stack(QtWidgets.QStackedWidget):
         self.initCurrent()
         self.currentChanged.connect(self.initCurrent)
 
-    def goNext(self, target):
-        print(target)
-
-    # def goPrev(self):
-    #     self.set_current_screen()
+    def deconnection(self):
+        self.setCurrentWidget(appStack.login_page)
+        del self.user
+        del self.index_page
+        del self.rapport_page
+        print("")
 
     def initCurrent(self):
         if self.currentWidget():
