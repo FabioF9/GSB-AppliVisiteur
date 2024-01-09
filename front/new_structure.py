@@ -41,8 +41,7 @@ class Login_page(QtWidgets.QWidget):
             "client_id":"",
             "client_secret":""
             })
-
-        if x.status_code==200:
+        if x.status_code == 200:
             logedin = True
             self.tokaccess = x.json()[0]['access_token']
             print(f'le token au apres une réussite : {self.tokaccess}')
@@ -62,6 +61,7 @@ class Index_page(QtWidgets.QWidget):
         loadUi("ui/new_index.ui", self)
         self.index_to_rapport.clicked.connect(self.goToRapport)
         self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
+        self.setUserDatas()
 
     def doSomethingNext(self):
         self.setRapportList()
@@ -79,15 +79,14 @@ class Index_page(QtWidgets.QWidget):
             button_dict[f'index_button{rapport["RAP_NUM"]}'] = QPushButton("afficher")
             suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
             edit_dict[f'index_edit{rapport["RAP_NUM"]}'] = QPushButton("éditer")
-            # test_dict[f'index_test{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
             self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['affiliate_med']['MED_NOM']))
             self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
-            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
-            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, button_dict[f'index_button{rapport["RAP_NUM"]}'])
-            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
-            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 6, edit_dict[f'index_edit{rapport["RAP_NUM"]}'])
+            # self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 3, QtWidgets.QTableWidgetItem(rapport['RAP_BILAN']))
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 3, button_dict[f'index_button{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, edit_dict[f'index_edit{rapport["RAP_NUM"]}'])
             currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
             currentButton.clicked.connect(lambda _, id_rapport=rapport["RAP_NUM"]: CreerPresentation(id_rapport))
 
