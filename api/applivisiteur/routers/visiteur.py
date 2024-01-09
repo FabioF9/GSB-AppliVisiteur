@@ -18,6 +18,15 @@ def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(o
                             detail=f"Error")
     return visiteurs
 
+@router.get('/visiteur/{id}', response_model=schemas.showVisiteur)
+def get_user(id: int, db: Session = Depends(get_db)):
+    visiteur = db.query(models.Visiteur).filter(
+        models.Visiteur.VIS_MATRICULE == id).first()
+    if not visiteur:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Visiteur with the id {id} is not available")
+    return visiteur
+
 
 @router.post('/create_visiteur', response_model=schemas.Visiteur)
 def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db)):

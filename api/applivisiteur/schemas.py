@@ -42,6 +42,13 @@ class Visiteur (BaseModel):
 
 class showVisiteur(BaseModel):
     LOG_LOGIN: str
+    VIS_NOM: str
+    VIS_ADRESSE: str
+    VIS_CP: int
+    VIS_VILLE: str
+    VIS_DATEEMBAUCHE: date
+    SEC_CODE : int
+    VIS_ADMIN : int
     rapport: List[Rapport] = []
 
 
