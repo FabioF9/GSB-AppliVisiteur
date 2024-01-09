@@ -68,8 +68,10 @@ class Index_page(QtWidgets.QWidget):
 
     def setUserDatas(self):
         request = requests.get(f'http://127.0.0.1:8000/visiteur/{appStack.user.id}',headers=appStack.user.headers)
-        print(appStack.user.id)
-        print(f'les infos du user : {request.json()}')
+        infoUser = request.json()
+        self.index_text_prenom.setText(infoUser["LOG_LOGIN"])
+        self.index_text_nom.setText(infoUser["VIS_NOM"])
+        self.index_text_secteur.setText(str(infoUser["SEC_CODE"]))
 
 
     def setRapportList(self):
