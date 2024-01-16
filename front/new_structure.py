@@ -16,6 +16,7 @@ class User():
         self.access_token = access_token
         self.id = user_id
         self.headers = {"Authorization": f"Bearer {self.access_token}"} 
+        self.admin = False
 
     def getUserDatas(self):
         x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
@@ -62,6 +63,8 @@ class Index_page(QtWidgets.QWidget):
         self.index_to_rapport.clicked.connect(self.goToRapport)
         self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
         self.setUserDatas()
+        if appStack.user.admin:
+            self.index_to_admin.setVisible(False)
 
     def doSomethingNext(self):
         self.setRapportList()
@@ -69,9 +72,7 @@ class Index_page(QtWidgets.QWidget):
     def setUserDatas(self):
         request = requests.get(f'http://127.0.0.1:8000/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         infoUser = request.json()
-        self.index_text_prenom.setText(infoUser["LOG_LOGIN"])
-        self.index_text_nom.setText(infoUser["VIS_NOM"])
-        self.index_text_secteur.setText(str(infoUser["SEC_CODE"]))
+        self.index_label_titre.setText(f' Bienvenue {infoUser["LOG_LOGIN"]} {infoUser["VIS_NOM"]} ')
 
 
     def setRapportList(self):
@@ -136,6 +137,13 @@ class Rapport_page(QtWidgets.QWidget):
         self.rapport_to_index.clicked.connect(self.goToIndex)
         self.rapport_datas.clicked.connect(self.sendRapport)
         self.setMedecins()
+        self.rapport_medecins.currentIndexChanged.connect(self.setRapportResume)
+        self.rapport_motif.currentIndexChanged.connect(self.setRapportResume)
+
+    def setRapportResume(self):
+        self.rapport_label2_medecin.setText(self.rapport_medecins.currentText())
+        self.rapport_label2_motif.setText(self.rapport_motif.currentText())
+
 
     def setMedecins(self):
         queryMedecins = requests.get("http://127.0.0.1:8000/medecins", headers=appStack.user.headers)

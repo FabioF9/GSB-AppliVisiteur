@@ -6,155 +6,220 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>510</height>
+    <width>943</width>
+    <height>587</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="2">
-    <widget class="QTextEdit" name="rapport_comm">
-     <property name="placeholderText">
-      <string>Votre commentaire doit être inséré ici :</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QComboBox" name="rapport_medecins"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QComboBox" name="rapport_motif">
+  <layout class="QHBoxLayout" name="horizontalLayout_6">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <property name="text">
-       <string>Visite</string>
-      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" colspan="2">
+        <widget class="QTextEdit" name="rapport_comm">
+         <property name="placeholderText">
+          <string>Votre commentaire doit être inséré ici :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QComboBox" name="rapport_medecins"/>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QComboBox" name="rapport_motif">
+         <item>
+          <property name="text">
+           <string>Visite</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Nouveauté</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Périodicité</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Actualisation</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Autre</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QLineEdit" name="rapport_motif_autre">
+         <property name="placeholderText">
+          <string>Autre cas de motif</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QComboBox" name="rapport_medoc1">
+         <item>
+          <property name="text">
+           <string>Alphasium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Betasium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Deltasium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Gammasium</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QComboBox" name="rapport_medoc2">
+         <item>
+          <property name="text">
+           <string>Alphasium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Betasium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Deltasium</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Gammasium</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QPushButton" name="rapport_to_index">
+         <property name="text">
+          <string>Retour Index</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPushButton" name="rapport_datas">
+         <property name="text">
+          <string>Envoyer</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <property name="text">
-       <string>Nouveauté</string>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="rapport_label_medecin">
+           <property name="text">
+            <string>Medecin :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rapport_label2_medecin">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="rapport_label_motif">
+           <property name="text">
+            <string>Motif :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rapport_label2_motif">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="rapport_label_echant_propose">
+           <property name="text">
+            <string>Echantillon(s) proposé(s) :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rapport_label2_echant_propose">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="rapport_label_echantillon">
+           <property name="text">
+            <string>Echantillon(s) laissé(s) :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rapport_label2_echantillon">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/logoGSB/logoGSBresize.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/logoGSB/logoGSBresize.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
-     <item>
-      <property name="text">
-       <string>Périodicité</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Actualisation</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Autre</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLineEdit" name="rapport_motif_autre">
-     <property name="placeholderText">
-      <string>Autre cas de motif</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QComboBox" name="rapport_medoc1">
-     <item>
-      <property name="text">
-       <string>Alphasium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Betasium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Deltasium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Gammasium</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QSpinBox" name="rapport_medoc1_nbr">
-     <property name="maximum">
-      <number>2</number>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QComboBox" name="rapport_medoc2">
-     <item>
-      <property name="text">
-       <string>Alphasium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Betasium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Deltasium</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Gammasium</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QSpinBox" name="rapport_medoc2_nbr">
-     <property name="maximum">
-      <number>2</number>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QComboBox" name="rapport_bilan">
-     <item>
-      <property name="text">
-       <string>Acheté</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Pas Acheté</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QPushButton" name="rapport_to_index">
-      <property name="text">
-       <string>Retour Index</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="rapport_datas">
-      <property name="text">
-       <string>Envoyer</string>
-      </property>
-     </widget>
-    </widget>
+    </layout>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections/>
 </ui>
