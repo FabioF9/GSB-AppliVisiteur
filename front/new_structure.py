@@ -6,6 +6,7 @@ from datetime import date
 from PyQt6 import QtWidgets
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt
+from PyQt6 import QtGui  
 
 from PyQt6.QtWidgets import (
     QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow, QToolButton
@@ -17,9 +18,11 @@ class User():
         self.id = user_id
         self.headers = {"Authorization": f"Bearer {self.access_token}"} 
         self.admin = False
+        self.getUserDatas()
 
     def getUserDatas(self):
-        x.requests.get(f'http://127.0.0.1:8000/user/{self.id}')
+        userdatas = (requests.get(f'http://127.0.0.1:8000/visiteur/{self.id}')).json()
+        self.admin = userdatas["VIS_ADMIN"]
 
 
 class Login_page(QtWidgets.QWidget):
@@ -45,7 +48,6 @@ class Login_page(QtWidgets.QWidget):
         if x.status_code == 200:
             logedin = True
             self.tokaccess = x.json()[0]['access_token']
-            print(f'le token au apres une réussite : {self.tokaccess}')
             # appStack.setCurrentWidget(appStack.index_page)
             appStack.launchIndex(self.tokaccess,x.json()[1])
         else:
@@ -63,8 +65,9 @@ class Index_page(QtWidgets.QWidget):
         self.index_to_rapport.clicked.connect(self.goToRapport)
         self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
         self.setUserDatas()
-        if appStack.user.admin:
-            self.index_to_admin.setVisible(False)
+        print(appStack.user.admin)
+        if not appStack.user.admin:
+            self.index_to_admin.hide()
 
     def doSomethingNext(self):
         self.setRapportList()
@@ -124,7 +127,6 @@ class Index_page(QtWidgets.QWidget):
         appStack.setCurrentWidget(appStack.rapport_page)
 
     def suppr(self,id_RAP):
-        # print("test")
         delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
         self.setRapportList()
 
@@ -151,7 +153,6 @@ class Rapport_page(QtWidgets.QWidget):
         i = 0
         for medecin in jsonMedecins:
             self.rapport_medecins.addItem(medecin['MED_NOM']+' '+medecin['MED_PRENOM'],medecin['MED_ID'])
-            print(self.rapport_medecins.itemData(i))
             i += 1
 
     def doSomethingNext(self):
@@ -161,18 +162,16 @@ class Rapport_page(QtWidgets.QWidget):
         appStack.setCurrentWidget(appStack.index_page)
 
     def sendRapport(self):
-        print(str(self.rapport_medecins.currentText()))
         med_id = self.rapport_medecins.itemData(self.rapport_medecins.currentIndex())
         if self.rapport_motif.currentText() == "Autre":
            motif = self.rapport_motif_autre.text()
-           print("le motif actuel : "+self.rapport_motif_autre.text())
         else:
             motif = self.rapport_motif.currentText()
-            print("le motif actuel : "+self.rapport_motif.currentText())
+            
         commentaire = self.rapport_comm.toPlainText()
         bilan = self.rapport_bilan.currentText()
-        print(commentaire)
-        print("la date actuel : "+todayFr)
+        
+        
 
         create_rapport = requests.post('http://127.0.0.1:8000/create_rapport', json={
             "RAP_DATE":todayFr,
@@ -198,13 +197,15 @@ class Stack(QtWidgets.QStackedWidget):
         # self.addWidget(self.index_page)
         self.initCurrent()
         self.currentChanged.connect(self.initCurrent)
+        self.setWindowIcon(QtGui.QIcon('ui/logoGSB.png'))
+        self.setWindowTitle("AppliVisiteur")
+
 
     def deconnection(self):
         self.setCurrentWidget(appStack.login_page)
         del self.user
         del self.index_page
         del self.rapport_page
-        print("")
 
     def initCurrent(self):
         if self.currentWidget():
@@ -227,4 +228,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     appStack = Stack()
     appStack.show()
+
     sys.exit(app.exec())
