@@ -36,3 +36,12 @@ def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@router.get('/visiteurgroup/{id}', response_model=List[schemas.showVisiteurGroup])
+def get_group(id: int, db: Session = Depends(get_db)):
+    visiteur = db.query(models.Visiteur).filter(
+        models.Visiteur.VIS_ADMINR_ID == id)
+    if not visiteur:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Visiteur Group with the id {id} is not available")
+    return visiteur 
