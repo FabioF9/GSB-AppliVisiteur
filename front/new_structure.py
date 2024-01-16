@@ -48,7 +48,6 @@ class Login_page(QtWidgets.QWidget):
         if x.status_code == 200:
             logedin = True
             self.tokaccess = x.json()[0]['access_token']
-            # appStack.setCurrentWidget(appStack.index_page)
             appStack.launchIndex(self.tokaccess,x.json()[1])
         else:
             print('Username or Password are wrong !')
@@ -65,9 +64,13 @@ class Index_page(QtWidgets.QWidget):
         self.index_to_rapport.clicked.connect(self.goToRapport)
         self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
         self.setUserDatas()
-        print(appStack.user.admin)
+        self.index_to_admin.clicked.connect(self.goToAdmin)
         if not appStack.user.admin:
             self.index_to_admin.hide()
+
+    def goToAdmin(self):
+        appStack.setCurrentWidget(appStack.admin_page)
+
 
     def doSomethingNext(self):
         self.setRapportList()
@@ -108,8 +111,6 @@ class Index_page(QtWidgets.QWidget):
             currentButtonEdit = edit_dict[f'index_edit{rapport["RAP_NUM"]}'] 
             currentButtonEdit.clicked.connect(lambda _, RAP_NUM=rapport["RAP_NUM"]: self.editRapport(RAP_NUM))
 
-
-
     def editRapport(self,RAP_NUM):
         # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
         rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
@@ -121,8 +122,7 @@ class Index_page(QtWidgets.QWidget):
 
 
         self.goToRapport()
-
-        
+ 
     def goToRapport(self):
         appStack.setCurrentWidget(appStack.rapport_page)
 
@@ -130,7 +130,13 @@ class Index_page(QtWidgets.QWidget):
         delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
         self.setRapportList()
 
+class Admin_page(QtWidgets.QWidget):
+    def __init__(self):
+        super(Admin_page, self).__init__()
+        loadUi("ui/new_admin.ui", self)
 
+    def doSomethingNext(self):
+        print('acces à admin')
 
 class Rapport_page(QtWidgets.QWidget):
     def __init__(self):
@@ -185,7 +191,6 @@ class Rapport_page(QtWidgets.QWidget):
 
         self.goToIndex()
 
-
 class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
         super(Stack, self).__init__()
@@ -200,12 +205,12 @@ class Stack(QtWidgets.QStackedWidget):
         self.setWindowIcon(QtGui.QIcon('ui/logoGSB.png'))
         self.setWindowTitle("AppliVisiteur")
 
-
     def deconnection(self):
         self.setCurrentWidget(appStack.login_page)
         del self.user
         del self.index_page
         del self.rapport_page
+        del self.admin_page
 
     def initCurrent(self):
         if self.currentWidget():
@@ -213,12 +218,15 @@ class Stack(QtWidgets.QStackedWidget):
 
     def launchIndex(self,access_token,id_user):
         self.user = User(access_token,id_user)
+        self.admin_page = Admin_page()
         self.index_page = Index_page()
         self.rapport_page = Rapport_page()
         # self.rapport_page = Rapport_page()
+        self.addWidget(self.admin_page)
         self.addWidget(self.index_page)
         self.addWidget(self.rapport_page)
         self.setCurrentWidget(self.index_page)
+
 
 if __name__ == "__main__":
     
