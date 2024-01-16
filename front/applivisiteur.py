@@ -15,11 +15,17 @@ class Window(QWidget):
         # self.tokaccess = " test "
         self.access_token = ""
         super().__init__()
-        layout = QGridLayout()
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(10)
         self.setWindowTitle("Galaxy Swiss Bourdin")
+        layout = QGridLayout()
         self.setLayout(layout)
+        button1 = QPushButton("Login")
+        layout.addWidget(button1)
+
+
+
+
         self.access_token = ""
         # Dimensionnez la fenêtre en pixels (largeur, hauteur)
         self.resize(400, 200)
@@ -83,7 +89,7 @@ class Screen2(QMainWindow):
         super().__init__()
         self.tokaccess = ""
         super(Screen2, self).__init__()
-        loadUi("main.ui", self)
+        loadUi("ui/main.ui", self)
         # self.access_token = Window.access_token
         # print(self.access_token)
         # headers = {"Authorization": f"Bearer {access_token}"}
@@ -97,11 +103,16 @@ class Screen2(QMainWindow):
         self.calendar.setGridVisible(True);
 
     def set_list(self):
+        while self.tableWidget.rowCount() > 0:
+            self.tableWidget.removeRow(0)
         x = requests.get('http://127.0.0.1:8000/medecins')
-        jason = x.json()
-        fake = json.dumps(jason)
-        self.List.clear()
-        self.List.setText(fake)  
+        lstMedecins = x.json()        
+        for medecin in lstMedecins:
+                self.tableWidget.insertRow(self.tableWidget.rowCount())                
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 0, QtWidgets.QTableWidgetItem(medecin['nom']))
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 1, QtWidgets.QTableWidgetItem(medecin['spe']))
+                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 2, QtWidgets.QTableWidgetItem(medecin['nom']))
+
 
     def gotoCpRendu(self):
         widget.setCurrentIndex(widget.currentIndex()+1)
@@ -150,7 +161,7 @@ class CpRendu(QMainWindow):
         super().__init__()
         self.tokaccess = ""
         super(CpRendu, self).__init__()
-        loadUi("CpRendu.ui", self)
+        loadUi("ui/CpRendu.ui", self)
         self.insert_medecins()
         self.CpRendu_test.clicked.connect(self.test)
         self.bouton_retour.clicked.connect(self.retour_acceuil)
@@ -173,9 +184,19 @@ class CpRendu(QMainWindow):
         else:
             motif = self.CpRendu_motif.currentText()
             print("le motif actuel : "+self.CpRendu_motif.currentText())
+        commentaire = self.CpRendu_commentaire.toPlainText()
         print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
         print("la date actuel : "+todayFr)
+        titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
         print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
+        x = requests.post('http://127.0.0.1:8000/create_rapport', json={
+            "RAP_DATE":todayFr,
+            "RAP_BILAN":titre,
+            "RAP_MOTIF":motif,
+            "RAP_COMMENTAIRE":commentaire,
+            "MED_ID":
+            })
+
         
 class ViewPdf(QMainWindow):
     """docstring for CpRendu"""
@@ -183,7 +204,7 @@ class ViewPdf(QMainWindow):
         super().__init__()
         self.tokaccess = ""
         super(ViewPdf, self).__init__()
-        loadUi("ViewRapport.ui", self)
+        loadUi("ui/ViewRapport.ui", self)
         self.view_retour.clicked.connect(self.retour_acceuil)
     
     def retour_acceuil(self):

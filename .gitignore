@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-.venv
-=======
 venv
-.DS_Store
->>>>>>> Stashed changes
+api/applivisiteur.db
+front/pdf/__pycache__/pdf.cpython-311.pyc

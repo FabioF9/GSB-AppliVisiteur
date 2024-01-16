@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from . import schemas
 
-SECRET_KEY = "301c33c0dee6385c33bd5e59baf3d6bd614b0a3208667ca7b9ad939898b46ca7" #to get a string like this run : openssl rand -hex 32
+# to get a string like this run : openssl rand -hex 32
+SECRET_KEY = "f8d0e3451c4917be5503820bedfb20ca1684974440b9ffac2e64cf2db1cf696b"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -16,7 +18,8 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def verify_token(token:str, credentials_exception):
+
+def verify_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
