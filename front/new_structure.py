@@ -157,8 +157,8 @@ class Admin_page(QtWidgets.QWidget):
         button_dict = {}
         suppr_dict = {}
         edit_dict = {}
-        for rapport in rapportsVis:
-            
+        # for rapport in rapportsVis:
+
             
 
 class Rapport_page(QtWidgets.QWidget):
