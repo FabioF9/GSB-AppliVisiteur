@@ -153,8 +153,11 @@ class Admin_page(QtWidgets.QWidget):
         from pdf.pdf import CreerPresentation
         while self.admin_tableau_rapport.rowCount() > 0:
             self.admin_tableau_rapports.removeRow(0)
-        rapportVis = (requests.get(f'http://127.0.0.1:8000/rapport/visiteur{id_vis}',headers=appStack.user.headers)).json()
-
+        rapportsVis = (requests.get(f'http://127.0.0.1:8000/rapport/visiteur{id_vis}',headers=appStack.user.headers)).json()
+        button_dict = {}
+        suppr_dict = {}
+        edit_dict = {}
+        for rapport in rapportsVis:
             
 
 class Rapport_page(QtWidgets.QWidget):
