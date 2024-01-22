@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from .. import database, schemas, models, oauth2
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 from ..hashing import Hash
 
@@ -25,6 +26,14 @@ def get_user(id: int, db: Session = Depends(get_db)):
     if not visiteur:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Visiteur with the id {id} is not available")
+
+    # Compte le nombre de rapports associés à ce visiteur
+    rapport_count = db.query(func.count(models.Rapport_Visite.RAP_NUM)).filter(
+        models.Rapport_Visite.VIS_MATRICULE == id).scalar()
+
+    # Ajoute le compte des rapports à l'objet visiteur
+    visiteur.RAPPORT_COUNT = rapport_count
+
     return visiteur
 
 
@@ -36,3 +45,30 @@ def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@router.get('/visiteurgroup/{id}', response_model=List[schemas.showVisiteurGroup])
+def get_group(id: int, db: Session = Depends(get_db)):
+    visiteurs = db.query(models.Visiteur).filter(
+        models.Visiteur.VIS_ADMINR_ID == id).all()
+    
+    if not visiteurs:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Visiteur Group with the id {id} is not available")
+
+    # Compte le nombre total de rapports pour tous les visiteurs du groupe
+    total_rapport_count = db.query(func.count(models.Rapport_Visite.RAP_NUM)).filter(
+        models.Rapport_Visite.VIS_MATRICULE.in_([v.VIS_MATRICULE for v in visiteurs])
+    ).scalar()
+
+    # Ajoute le compte des rapports à chaque objet visiteur du groupe
+    for visiteur in visiteurs:
+        rapport_count = db.query(func.count(models.Rapport_Visite.RAP_NUM)).filter(
+            models.Rapport_Visite.VIS_MATRICULE == visiteur.VIS_MATRICULE
+        ).scalar()
+        visiteur.RAPPORT_COUNT = rapport_count
+
+    # Ajoute le total des rapports au résultat pour le groupe
+    for visiteur in visiteurs:
+        visiteur.TOTAL_RAPPORT_COUNT = total_rapport_count
+
+    return visiteurs

@@ -49,8 +49,17 @@ class showVisiteur(BaseModel):
     VIS_DATEEMBAUCHE: date
     SEC_CODE : int
     VIS_ADMIN : int
+    RAPPORT_COUNT : int
     # rapport: List[Rapport] = []
 
+class showVisiteurGroup(BaseModel):
+    VIS_MATRICULE: int
+    LOG_LOGIN: str
+    VIS_NOM: str
+    SEC_CODE : int
+    VIS_ADMIN : int
+    VIS_ADMINR_ID : int
+    RAPPORT_COUNT : int
 
 class showRapportCreator(BaseModel):
 

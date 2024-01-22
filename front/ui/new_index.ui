@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>907</width>
-    <height>545</height>
+    <height>547</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -55,6 +55,15 @@
        <width>609</width>
        <height>400</height>
       </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>3</number>
      </property>
      <property name="alternatingRowColors">
       <bool>false</bool>

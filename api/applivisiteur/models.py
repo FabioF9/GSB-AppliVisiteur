@@ -16,6 +16,7 @@ class Visiteur(Base):
     LOG_LOGIN = Column(String)
     LOG_MDP = Column(String)
     VIS_ADMIN = Column(Integer)
+    VIS_ADMINR_ID = Column(Integer)
 
     rapport = relationship('Rapport_Visite', back_populates="creator")
 
