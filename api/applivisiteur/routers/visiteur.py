@@ -49,8 +49,25 @@ def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db)):
 @router.get('/visiteurgroup/{id}', response_model=List[schemas.showVisiteurGroup])
 def get_group(id: int, db: Session = Depends(get_db)):
     visiteur = db.query(models.Visiteur).filter(
-        models.Visiteur.VIS_ADMINR_ID == id)
+        models.Visiteur.VIS_ADMINR_ID == id).first()
+    
     if not visiteur:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Visiteur Group with the id {id} is not available")
-    return visiteur 
+    
+    # Compte le nombre de rapports associés à ce visiteur
+    rapport_count = db.query(func.count(models.Rapport_Visite.RAP_NUM)).filter(
+    models.Rapport_Visite.VIS_MATRICULE == id).scalar()
+
+    # Crée une instance de showVisiteurGroup avec les données nécessaires
+    result = schemas.showVisiteurGroup(
+        VIS_MATRICULE=visiteur.VIS_MATRICULE,
+        LOG_LOGIN=visiteur.LOG_LOGIN,
+        VIS_NOM=visiteur.VIS_NOM,
+        SEC_CODE=visiteur.SEC_CODE,
+        VIS_ADMIN=visiteur.VIS_ADMIN,
+        VIS_ADMINR_ID=visiteur.VIS_ADMINR_ID,
+        RAPPORT_COUNT=rapport_count
+    )
+
+    return [result]

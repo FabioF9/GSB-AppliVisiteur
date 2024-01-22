@@ -59,6 +59,7 @@ class showVisiteurGroup(BaseModel):
     SEC_CODE : int
     VIS_ADMIN : int
     VIS_ADMINR_ID : int
+    RAPPORT_COUNT : int
 
 class showRapportCreator(BaseModel):
 
