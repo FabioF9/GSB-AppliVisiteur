@@ -87,7 +87,10 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="admin_boutton_vis1">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Voir</string>
           </property>
@@ -161,7 +164,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="admin_boutton_vis2">
           <property name="text">
            <string>Voir</string>
           </property>
@@ -238,7 +241,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="admin_boutton_vis3">
           <property name="text">
            <string>Voir</string>
           </property>
@@ -256,14 +259,14 @@
         </size>
        </property>
        <property name="text">
-        <string>Retour Index</string>
+        <string>Retour</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget">
+    <widget class="QTableWidget" name="admin_tableau_rapports">
      <column>
       <property name="text">
        <string>Date</string>

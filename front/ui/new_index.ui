@@ -143,7 +143,7 @@
         <set>Qt::ImhNone</set>
        </property>
        <property name="text">
-        <string>Administration</string>
+        <string>Gestion visiteurs</string>
        </property>
        <property name="default">
         <bool>false</bool>
