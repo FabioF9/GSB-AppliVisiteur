@@ -159,6 +159,7 @@ class Admin_page(QtWidgets.QWidget):
         edit_dict = {}
         for rapport in rapportsVis:
             
+            
 
 class Rapport_page(QtWidgets.QWidget):
     def __init__(self):
