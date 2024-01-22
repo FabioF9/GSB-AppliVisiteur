@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from .. import database, schemas, models, oauth2
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 from ..hashing import Hash
 
@@ -25,6 +26,14 @@ def get_user(id: int, db: Session = Depends(get_db)):
     if not visiteur:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Visiteur with the id {id} is not available")
+
+    # Compte le nombre de rapports associés à ce visiteur
+    rapport_count = db.query(func.count(models.Rapport_Visite.RAP_NUM)).filter(
+        models.Rapport_Visite.VIS_MATRICULE == id).scalar()
+
+    # Ajoute le compte des rapports à l'objet visiteur
+    visiteur.RAPPORT_COUNT = rapport_count
+
     return visiteur
 
 

@@ -49,6 +49,7 @@ class showVisiteur(BaseModel):
     VIS_DATEEMBAUCHE: date
     SEC_CODE : int
     VIS_ADMIN : int
+    RAPPORT_COUNT : int
     # rapport: List[Rapport] = []
 
 class showVisiteurGroup(BaseModel):
