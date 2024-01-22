@@ -43,14 +43,14 @@
         <item>
          <layout class="QFormLayout" name="formLayout_3">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_13">
+           <widget class="QLabel" name="admin_vis1_label_nom">
             <property name="text">
              <string>Nom</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLabel" name="label_14">
+           <widget class="QLabel" name="admin_vis1_nom">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -64,7 +64,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label_16">
+           <widget class="QLabel" name="admin_vis1_prenom">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -78,7 +78,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLabel" name="label_18">
+           <widget class="QLabel" name="admin_vis1_count">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -124,7 +124,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLabel" name="label_8">
+           <widget class="QLabel" name="admin_vis2_nom">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -138,7 +138,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label_10">
+           <widget class="QLabel" name="admin_vis2_prenom">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -152,7 +152,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLabel" name="label_12">
+           <widget class="QLabel" name="admin_vis2_count">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -201,7 +201,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="admin_vis3_nom">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -215,7 +215,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="admin_vis3_prenom">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -229,7 +229,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="admin_vis3_count">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -248,7 +248,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="admin_to_index">
        <property name="minimumSize">
         <size>
          <width>0</width>

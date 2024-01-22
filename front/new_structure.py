@@ -119,8 +119,6 @@ class Index_page(QtWidgets.QWidget):
         if ( index_medecin != -1 ):
             appStack.rapport_page.rapport_medecins.setCurrentIndex(index_medecin)
         appStack.rapport_page.rapport_comm.setText(rapport_infos['RAP_COMMENTAIRE'])
-
-
         self.goToRapport()
  
     def goToRapport(self):
@@ -134,9 +132,30 @@ class Admin_page(QtWidgets.QWidget):
     def __init__(self):
         super(Admin_page, self).__init__()
         loadUi("ui/new_admin.ui", self)
+        self.admin_to_index.clicked.connect(self.goToIndex)
+
+    def goToIndex(self):
+        appStack.setCurrentWidget(appStack.index_page)        
 
     def doSomethingNext(self):
-        print('acces à admin')
+        sousFifre = (requests.get(f'http://127.0.0.1:8000/visiteurgroup/{appStack.user.id}',headers=appStack.user.headers)).json()
+        self.admin_vis1_nom.setText(sousFifre[0]["VIS_NOM"])
+        self.admin_vis1_prenom.setText(sousFifre[0]["LOG_LOGIN"])
+        # self.admin_vis1_prenom.setText(sousFifre[0]["LOG_LOGIN"])
+        self.admin_vis2_nom.setText(sousFifre[1]["VIS_NOM"])
+        self.admin_vis2_prenom.setText(sousFifre[1]["LOG_LOGIN"])
+        # self.admin_vis2_count.setText(sousFifre[1]["LOG_LOGIN"])
+        self.admin_vis3_nom.setText(sousFifre[2]["VIS_NOM"])
+        self.admin_vis3_prenom.setText(sousFifre[2]["LOG_LOGIN"])
+        # self.admin_vis3_count.setText(sousFifre[2]["LOG_LOGIN"])
+
+    def setVisRapports(self,id_vis):
+        from pdf.pdf import CreerPresentation
+        while self.admin_tableau_rapport.rowCount() > 0:
+            self.admin_tableau_rapports.removeRow(0)
+        rapportVis = (requests.get(f'http://127.0.0.1:8000/rapport/visiteur{id_vis}',headers=appStack.user.headers)).json()
+
+            
 
 class Rapport_page(QtWidgets.QWidget):
     def __init__(self):
