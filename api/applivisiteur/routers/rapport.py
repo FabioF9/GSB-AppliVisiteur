@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from .. import database, schemas, models, oauth2
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import func
 from typing import List
 
 router = APIRouter(
@@ -68,3 +69,11 @@ def update(id, request: schemas.Rapport, db: Session = Depends(get_db),current_u
     rapport.update(request.model_dump())
     db.commit()
     return 'done'
+
+@router.get('/maxrapport', response_model=int)
+def max_rapport(db: Session = Depends(get_db)):
+    max_rapport = db.query(func.max(models.Rapport_Visite.RAP_NUM)).scalar()
+    if max_rapport is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Aucun rapport trouvé")
+    return max_rapport
