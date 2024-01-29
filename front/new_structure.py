@@ -236,8 +236,8 @@ class Rapport_page(QtWidgets.QWidget):
         queryMedicaments = requests.get("http://127.0.0.1:8000/medicaments", headers=appStack.user.headers)
         medicaments = queryMedicaments.json()
         for medicament in medicaments:
-            self.rapport_medicament1.addItem(medicament['MEDI_LABEL'])
-            self.rapport_medicament2.addItem(medicament['MEDI_LABEL'])
+            self.rapport_medicament1.addItem(medicament['MEDI_LABEL'], medicament['MEDI_ID'])
+            self.rapport_medicament2.addItem(medicament['MEDI_LABEL'], medicament['MEDI_ID'])
         
 
     def doSomethingNext(self):
@@ -253,19 +253,42 @@ class Rapport_page(QtWidgets.QWidget):
         else:
             motif = self.rapport_motif.currentText()
             
-        commentaire = self.rapport_comm.toPlainText()
-        bilan = self.rapport_bilan.currentText()
+        commentaire = self.rapport_bilan.toPlainText()
+        listeMedicaments = []
         
-        
+        if self.rapport_medicament1.currentText() != 'Aucun':
+            listeMedicaments.append({'med':1,'id':self.rapport_medicament1.itemData(self.rapport_medicament1.currentIndex()),'nbr':self.rapport_nbr_medic1.value()})
+        else:
+            listeMedicaments.append({'med':0})
+        if self.rapport_medicament2.currentText() != 'Aucun':
+            listeMedicaments.append({'med':2,'id':self.rapport_medicament2.itemData(self.rapport_medicament2.currentIndex()),'nbr':self.rapport_nbr_medic2.value()})
+        else:        
+            listeMedicaments.append({'med':0})
 
         create_rapport = requests.post('http://127.0.0.1:8000/create_rapport', json={
             "RAP_DATE":todayFr,
-            "RAP_BILAN":bilan,
+            "RAP_BILAN":'bilan',
             "RAP_MOTIF":motif,
             "RAP_COMMENTAIRE":commentaire,
             "MED_ID": med_id,
             "VIS_MATRICULE": appStack.user.id
-            },headers=appStack.user.headers)     
+            },headers=appStack.user.headers) 
+        getLastRapp = (requests.get('http://127.0.0.1:8000/maxrapport', headers=appStack.user.headers)).json()
+        for medicament in listeMedicaments:
+            if medicament['med'] != 0:
+                json ={
+                      "ECH_NOMBRE": medicament['nbr'],
+                      "RAP_NUM": getLastRapp,
+                      "MEDI_ID": medicament['id']
+                    } 
+                print(json)
+                requests.post('http://127.0.0.1:8000/add_echantillon', json={
+                      "ECH_NOMBRE": medicament['nbr'],
+                      "RAP_NUM": getLastRapp,
+                      "MEDI_ID": medicament['id']
+                    } ,headers=appStack.user.headers)
+
+
 
 
         self.goToIndex()
