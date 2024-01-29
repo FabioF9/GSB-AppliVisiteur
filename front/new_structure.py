@@ -217,6 +217,7 @@ class Rapport_page(QtWidgets.QWidget):
         self.setMedecins()
         self.rapport_medecins.currentIndexChanged.connect(self.setRapportResume)
         self.rapport_motif.currentIndexChanged.connect(self.setRapportResume)
+        self.setMedicaments()
 
     def setRapportResume(self):
         self.rapport_label2_medecin.setText(self.rapport_medecins.currentText())
@@ -230,6 +231,14 @@ class Rapport_page(QtWidgets.QWidget):
         for medecin in jsonMedecins:
             self.rapport_medecins.addItem(medecin['MED_NOM']+' '+medecin['MED_PRENOM'],medecin['MED_ID'])
             i += 1
+
+    def setMedicaments(self):
+        queryMedicaments = requests.get("http://127.0.0.1:8000/medicaments", headers=appStack.user.headers)
+        medicaments = queryMedicaments.json()
+        for medicament in medicaments:
+            self.rapport_medicament1.addItem(medicament['MEDI_LABEL'])
+            self.rapport_medicament2.addItem(medicament['MEDI_LABEL'])
+        
 
     def doSomethingNext(self):
         return False
