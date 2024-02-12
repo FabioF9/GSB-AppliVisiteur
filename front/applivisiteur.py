@@ -6,63 +6,49 @@ from datetime import date
 from PyQt6 import QtWidgets
 from PyQt6.uic import loadUi
 from PyQt6.QtCore import Qt
+from PyQt6 import QtGui
+from PyQt6.QtGui import QIcon
+
 from PyQt6.QtWidgets import (
-    QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow
+    QWidget, QPushButton, QApplication, QGridLayout, QLabel, QLineEdit, QMainWindow, QToolButton
 )
 
-class Window(QWidget):
+class User():
+    def __init__(self, access_token, user_id):
+        self.access_token = access_token
+        self.id = user_id
+        self.headers = {"Authorization": f"Bearer {self.access_token}"} 
+        self.admin = False
+        self.getUserDatas()
+
+    def getUserDatas(self):
+        """
+        Récupère et set les donnée du visiteurs
+
+        Envoie une requête à la L'API " /visiteur/{id} "
+        """
+        userdatas = (requests.get(f'http://127.0.0.1:8000/visiteur/{self.id}')).json()
+        self.admin = userdatas["VIS_ADMIN"]
+
+class Login_page(QtWidgets.QWidget):
     def __init__(self):
-        # self.tokaccess = " test "
-        self.access_token = ""
-        super().__init__()
-        layout.setContentsMargins(20, 20, 20, 20)
-        layout.setSpacing(10)
-        self.setWindowTitle("Galaxy Swiss Bourdin")
-        layout = QGridLayout()
-        self.setLayout(layout)
-        button1 = QPushButton("Login")
-        layout.addWidget(button1)
-
-
-
-
-        self.access_token = ""
-        # Dimensionnez la fenêtre en pixels (largeur, hauteur)
-        self.resize(400, 200)
-
-        title = QLabel("Login Form :")
-        layout.addWidget(title, 0, 1)
-
-        user = QLabel("Username :")
-        layout.addWidget(user, 1, 0)
-
-        pwd = QLabel("Password :")
-        layout.addWidget(pwd, 2, 0)
-
-        self.input1 = QLineEdit()
-        self.input1.returnPressed.connect(self.login)
-        layout.addWidget(self.input1, 1, 1)
-
-        self.input2 = QLineEdit()
-        self.input2.setEchoMode(QLineEdit.EchoMode.Password)
-        self.input2.returnPressed.connect(self.login)
-        layout.addWidget(self.input2, 2, 1)
-
-        button1 = QPushButton("Login")
-        button1.clicked.connect(self.login)
-        layout.addWidget(button1, 3, 1)
-
-
-    def gotoscreen2(self):
-        widget.setCurrentIndex(widget.currentIndex()+1)
-        # menu.get_token(self.tokaccess)
+        super(Login_page, self).__init__()
+        loadUi("ui/login.ui", self)
+        self.login_button1.clicked.connect(self.login)
 
     def login(self):
-        # print(self.tokaccess)
+        """
+        Connexion à l'application
 
-        login   = self.input1.text()
-        mdp     = self.input2.text()
-        logedin = False
+        Vérifie les informations rentrées dans le formamulaire de connexion
+
+        Envoie l'identifiant et le mot de passe rentré à l'API " /login/{json} ",
+        Si code retour = 200 : récupération du token de connexion et initialisation des fenêtres de l'application
+        Sinon : erreur
+
+        """
+        login   = self.login_input1.text()
+        mdp     = self.login_input2.text()
 
         x = requests.post(f'http://127.0.0.1:8000/login',
         data={
@@ -73,174 +59,395 @@ class Window(QWidget):
             "client_id":"",
             "client_secret":""
             })
-
-        if x.status_code==200:
-            logedin = True
-            # self.tokaccess = x.json().get("access_token")
-            # print(self.tokaccess)
-            self.gotoscreen2()
+        if x.status_code == 200:
+            self.tokaccess = x.json()[0]['access_token']
+            appStack.launchIndex(self.tokaccess,x.json()[1])
         else:
-            print('Username or Password are wrong !')    
+            print('Username or Password are wrong !')
 
+    def doSomethingNext(self):
+        """
+        Méthode au lancement de la page 
 
-class Screen2(QMainWindow):
-    """docstring for Screen2"""
-    def __init__(self, login):
-        super().__init__()
-        self.tokaccess = ""
-        super(Screen2, self).__init__()
-        loadUi("ui/main.ui", self)
-        # self.access_token = Window.access_token
-        # print(self.access_token)
-        # headers = {"Authorization": f"Bearer {access_token}"}
-        # x = requests.get('http://127.0.0.1:8000/medecins', headers=headers)
-        self.set_list()
-        self.index_button_create.clicked.connect(self.createDr)
-        self.index_button_update.clicked.connect(self.updateDr)
-        self.index_button_delete.clicked.connect(self.deleteDr)
-        self.index_button_read.clicked.connect(self.gotoCpRendu)
-        self.index_button_view.clicked.connect(self.gotoView)
-        self.calendar.setGridVisible(True);
+        Affiche un message de bienvenue
+        """
+        print("début de l'application")
 
-    def set_list(self):
-        while self.tableWidget.rowCount() > 0:
-            self.tableWidget.removeRow(0)
-        x = requests.get('http://127.0.0.1:8000/medecins')
-        lstMedecins = x.json()        
-        for medecin in lstMedecins:
-                self.tableWidget.insertRow(self.tableWidget.rowCount())                
-                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 0, QtWidgets.QTableWidgetItem(medecin['nom']))
-                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 1, QtWidgets.QTableWidgetItem(medecin['spe']))
-                self.tableWidget.setItem(self.tableWidget.rowCount()-1, 2, QtWidgets.QTableWidgetItem(medecin['nom']))
-
-
-    def gotoCpRendu(self):
-        widget.setCurrentIndex(widget.currentIndex()+1)
-
-
-    def createDr(self):
-        # print(f"Window token = {login.tokaccess}")
-        # print(f"Screen 2 token = {self.tokaccess}")
-        nom   = self.dr_nom.text()
-        spe   = self.dr_spe.text()
-        ville = self.dr_ville.text()
-        x = requests.post(f'http://127.0.0.1:8000/create_medecin', json={
-            "nom":nom,
-            "spe":spe,
-            "ville":ville
-            })
-        self.set_list()
-
-
-    def updateDr(self):
-        id_dr = self.dr_id.text()
-        nom   = self.dr_nom.text()
-        spe   = self.dr_spe.text()
-        ville = self.dr_ville.text()
-        x = requests.put(f'http://127.0.0.1:8000/update_medecin/{id_dr}', json={
-            "nom":nom,
-            "spe":spe,
-            "ville":ville
-            })
-        self.set_list()
-
-    def deleteDr(self):
-        id_dr = self.dr_id.text()
-        x = requests.delete(f'http://127.0.0.1:8000/delete_medecin/{id_dr}')
-        self.set_list()
-
-    def gotoView(self):
-        widget.setCurrentIndex(widget.currentIndex()+2)
-
-
-
-
-class CpRendu(QMainWindow):
-    """docstring for CpRendu"""
+class Index_page(QtWidgets.QWidget):
     def __init__(self):
-        super().__init__()
-        self.tokaccess = ""
-        super(CpRendu, self).__init__()
-        loadUi("ui/CpRendu.ui", self)
-        self.insert_medecins()
-        self.CpRendu_test.clicked.connect(self.test)
-        self.bouton_retour.clicked.connect(self.retour_acceuil)
+        from pdf.pdf import CreerPresentation
+        super(Index_page, self).__init__()
+        loadUi("ui/index.ui", self)
+        self.index_to_rapport.clicked.connect(self.goToRapport)
+        self.index_bouton_deconnection.clicked.connect(appStack.deconnection)
+        self.setUserDatas()
+        self.index_to_admin.clicked.connect(self.goToAdmin)
+        if not appStack.user.admin:
+            self.index_to_admin.hide()
+
+    def goToAdmin(self):
+        """
+        Affiche la fenêtre "Admin"
+        """
+        appStack.setCurrentWidget(appStack.admin_page)
+
+
+    def doSomethingNext(self):
+        """
+        Méthode au lancement de la page
+
+        Lance la méthode "setRapportList()"
+        """
+        self.setRapportList()
+
+    def setUserDatas(self):
+        """
+        Affiche le nom et prénom du visiteur sur l'application
+
+        Effectue une requête pour récupérer les données du visiteur 
+        Change le texte du label "index_label_titre"
+        """
+        request = requests.get(f'http://127.0.0.1:8000/visiteur/{appStack.user.id}',headers=appStack.user.headers)
+        infoUser = request.json()
+        self.index_label_titre.setText(f' Bienvenue {infoUser["LOG_LOGIN"]} {infoUser["VIS_NOM"]} ')
+
+
+    def setRapportList(self):
+        """
+        Ajoute les lignes des rapports du visiteur dans un tableau
+
+        Importe la bibliothèque pdf
+        Enlève toutes les lignes déjà présentes dans le tableau
+        Effectue une requête à l'API "/rapport/visiter/{id}"
+        Boucle sur le json contenant les rapports du vissiteur
+        Ajoute les informations des rapports dans les lignes ["Date","Medecin","Motif","Voir","Supprimer","Editer"]
+            Définie la fontion des boutons
+            ( les colonnes "Voir","Supprimer","Editer" sont complété avec des bouttons qui ont une fonctionnalité en accord avec leur appelation )
+        """
+        from pdf.pdf import CreerPresentation
+        while self.index_tableau_rapports.rowCount() > 0:
+            self.index_tableau_rapports.removeRow(0)
+        request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
+        all_rapports = request.json()
+        button_dict = {}
+        suppr_dict = {}
+        edit_dict = {}
+        for rapport in all_rapports:
+            button_dict[f'index_button{rapport["RAP_NUM"]}'] = QPushButton("afficher")
+            suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
+            edit_dict[f'index_edit{rapport["RAP_NUM"]}'] = QPushButton("éditer")
+            self.index_tableau_rapports.insertRow(self.index_tableau_rapports.rowCount())                
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['affiliate_med']['MED_NOM']))
+            self.index_tableau_rapports.setItem(self.index_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 3, button_dict[f'index_button{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 4, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
+            self.index_tableau_rapports.setCellWidget(self.index_tableau_rapports.rowCount()-1, 5, edit_dict[f'index_edit{rapport["RAP_NUM"]}'])
+
+            currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
+            currentButton.clicked.connect(lambda _, id_rapport=rapport["RAP_NUM"]: CreerPresentation(id_rapport))
+            currentButton.setIcon(QIcon('ui/eye.png'))
+
+            currentButtonSuppr = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
+            currentButtonSuppr.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
+            currentButtonSuppr.setIcon(QIcon('ui/trash-can.png'))
+
+            currentButtonEdit = edit_dict[f'index_edit{rapport["RAP_NUM"]}'] 
+            currentButtonEdit.clicked.connect(lambda _, RAP_NUM=rapport["RAP_NUM"]: self.editRapport(RAP_NUM))
+            currentButtonEdit.setIcon(QIcon('ui/office-material.png'))
+
+    def editRapport(self,RAP_NUM):
+        """
+        Éditer un rapport
+
+        Ouvre la page d'édition des rapport avec les données du rapport sélectionné
+        """
+        # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
+        rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
+        rapport_infos = rapport_query.json()
+        index_medecin = appStack.rapport_page.rapport_medecins.findData(rapport_infos['MED_ID'])
+        if ( index_medecin != -1 ):
+            appStack.rapport_page.rapport_medecins.setCurrentIndex(index_medecin)
+        appStack.rapport_page.rapport_comm.setText(rapport_infos['RAP_COMMENTAIRE'])
+        self.goToRapport()
+ 
+    def goToRapport(self):
+        """
+        Affiche la page "Rapport"
+        """
+        appStack.setCurrentWidget(appStack.rapport_page)
+
+    def suppr(self,id_RAP):
+        """
+        Supprime un rapport
+
+        Supprime dans la base de donnée le rapport sélectionnée à l'aide d'une requête à l'API "/delete_rapport"
+        """
+        delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
+        self.setRapportList()
+
+class Admin_page(QtWidgets.QWidget):
+    def __init__(self):
+        super(Admin_page, self).__init__()
+        loadUi("ui/admin.ui", self)
+        self.admin_to_index.clicked.connect(self.goToIndex)
+
+    def goToIndex(self):
+        """
+        Affiche la page "Index"
+        """
+        appStack.setCurrentWidget(appStack.index_page)        
+
+    def doSomethingNext(self):
+        """
+        Méthode au lancement de la page
+
+        Récupére les informations des visiteur en charge du visiteur connecté (Svst) et les set
+    
+        """
+        sousFifre = (requests.get(f'http://127.0.0.1:8000/visiteurgroup/{appStack.user.id}',headers=appStack.user.headers)).json()
+        self.admin_vis1_nom.setText(sousFifre[0]["VIS_NOM"])
+        self.admin_vis1_prenom.setText(sousFifre[0]["LOG_LOGIN"])
+        self.admin_vis1_count.setText(str(sousFifre[0]["RAPPORT_COUNT"]))
+        self.admin_boutton_vis1.clicked.connect(lambda _, id_vis=int(sousFifre[0]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
+        self.admin_boutton_vis1.setIcon(QIcon('ui/eye.png'))
+        self.admin_vis2_nom.setText(sousFifre[1]["VIS_NOM"])
+        self.admin_vis2_prenom.setText(sousFifre[1]["LOG_LOGIN"])
+        self.admin_vis2_count.setText(str(sousFifre[1]["RAPPORT_COUNT"]))
+        self.admin_boutton_vis2.clicked.connect(lambda _, id_vis=int(sousFifre[1]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
+        self.admin_boutton_vis2.setIcon(QIcon('ui/eye.png'))
+        self.admin_vis3_nom.setText(sousFifre[2]["VIS_NOM"])
+        self.admin_vis3_prenom.setText(sousFifre[2]["LOG_LOGIN"])
+        self.admin_vis3_count.setText(str(sousFifre[2]["RAPPORT_COUNT"]))
+        self.admin_boutton_vis3.clicked.connect(lambda _, id_vis=int(sousFifre[2]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
+        self.admin_boutton_vis3.setIcon(QIcon('ui/eye.png'))
+
+    def setVisRapports(self,id_vis):
+        """
+        Ajoute les lignes des rapports du visiteur dans un tableau
+
+        Importe la bibliothèque pdf
+        Enlève toutes les lignes déjà présentes dans le tableau
+        Effectue une requête à l'API "/rapport/visiter/{id}"
+        Boucle sur le json contenant les rapports du vissiteur
+        Ajoute les informations des rapports dans les lignes ["Date","Medecin","Motif","Voir","Supprimer","Editer"]
+            Définie la fontion des boutons
+            ( les colonnes "Voir","Supprimer","Editer" sont complété avec des bouttons qui ont une fonctionnalité en accord avec leur appelation )
+        """
+        from pdf.pdf import CreerPresentation
+        while self.admin_tableau_rapports.rowCount() > 0:
+            self.admin_tableau_rapports.removeRow(0)
+        rapportsVis = (requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{id_vis}',headers=appStack.user.headers)).json()
+        button_dict = {}
+        suppr_dict = {}
+        edit_dict = {}
+        for rapport in rapportsVis:
+            button_dict[f'index_button{rapport["RAP_NUM"]}'] = QPushButton("afficher")
+            suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] = QPushButton("supprimer")
+            edit_dict[f'index_edit{rapport["RAP_NUM"]}'] = QPushButton("éditer")
+            self.admin_tableau_rapports.insertRow(self.admin_tableau_rapports.rowCount())                
+            self.admin_tableau_rapports.setItem(self.admin_tableau_rapports.rowCount()-1, 0, QtWidgets.QTableWidgetItem(rapport['RAP_DATE']))
+            self.admin_tableau_rapports.setItem(self.admin_tableau_rapports.rowCount()-1, 1, QtWidgets.QTableWidgetItem(rapport['affiliate_med']['MED_NOM']))
+            self.admin_tableau_rapports.setItem(self.admin_tableau_rapports.rowCount()-1, 2, QtWidgets.QTableWidgetItem(rapport['RAP_MOTIF']))
+            self.admin_tableau_rapports.setCellWidget(self.admin_tableau_rapports.rowCount()-1, 3, button_dict[f'index_button{rapport["RAP_NUM"]}'])
+            self.admin_tableau_rapports.setCellWidget(self.admin_tableau_rapports.rowCount()-1, 4, suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'])
+            self.admin_tableau_rapports.setCellWidget(self.admin_tableau_rapports.rowCount()-1, 5, edit_dict[f'index_edit{rapport["RAP_NUM"]}'])
+
+            currentButton = button_dict[f'index_button{rapport["RAP_NUM"]}'] 
+            currentButton.clicked.connect(lambda _, id_rapport=rapport["RAP_NUM"]: CreerPresentation(id_rapport))
+            currentButton.setIcon(QIcon('ui/eye.png'))
+
+            currentButtonSuppr = suppr_dict[f'index_suppr{rapport["RAP_NUM"]}'] 
+            currentButtonSuppr.clicked.connect(lambda _, id_RAP=rapport["RAP_NUM"]: self.suppr(id_RAP))
+            currentButtonSuppr.setIcon(QIcon('ui/trash-can.png'))
+
+            currentButtonEdit = edit_dict[f'index_edit{rapport["RAP_NUM"]}'] 
+            currentButtonEdit.clicked.connect(lambda _, RAP_NUM=rapport["RAP_NUM"]: self.editRapport(RAP_NUM))
+            currentButtonEdit.setIcon(QIcon('ui/office-material.png'))
+
+    def suppr(self,id_RAP):
+        """
+        Supprime un rapport
+
+        Supprime dans la base de donnée le rapport sélectionnée à l'aide d'une requête à l'API "/delete_rapport"
+        """        
+        delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
+        self.setVisRapports()
+
+    def goToRapport(self):
+        """
+        Affiche la page "Rapport"
+        """
+        appStack.setCurrentWidget(appStack.rapport_page)        
+
+    def editRapport(self,RAP_NUM):
+        """
+        Éditer un rapport
+
+        Ouvre la page d'édition des rapport avec les données du rapport sélectionné
+        """        
+        # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
+        rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
+        rapport_infos = rapport_query.json()
+        index_medecin = appStack.rapport_page.rapport_medecins.findData(rapport_infos['MED_ID'])
+        if ( index_medecin != -1 ):
+            appStack.rapport_page.rapport_medecins.setCurrentIndex(index_medecin)
+        appStack.rapport_page.rapport_comm.setText(rapport_infos['RAP_COMMENTAIRE'])
+        self.goToRapport()
+
+class Rapport_page(QtWidgets.QWidget):
+    def __init__(self):
+        super(Rapport_page, self).__init__()
+        loadUi("ui/rapport.ui", self)
+        self.rapport_to_index.clicked.connect(self.goToIndex)
+        self.rapport_envoyer.clicked.connect(self.sendRapport)
+        self.setMedecins()
+        self.rapport_medecins.currentIndexChanged.connect(self.setRapportResume)
+        self.rapport_motif.currentIndexChanged.connect(self.setRapportResume)
+        self.setMedicaments()
+
+    def setRapportResume(self):
+        """
+        Récupére les données sélectionnée dans les champs "médecin"
+        """        
+        self.rapport_label2_medecin.setText(self.rapport_medecins.currentText())
+        self.rapport_label2_motif.setText(self.rapport_motif.currentText())
+
+
+    def setMedecins(self):
+        """
+        Set la liste des médecins dans une liste déroulante
+        """
+        queryMedecins = requests.get("http://127.0.0.1:8000/medecins", headers=appStack.user.headers)
+        jsonMedecins = queryMedecins.json()
+        i = 0
+        print(jsonMedecins)
+        for medecin in jsonMedecins:
+            nomMed = medecin['MED_NOM']+' '+medecin['MED_PRENOM']
+            print(nomMed)
+            # self.rapport_medecins.addItems(Qstring(nomMed),int(medecin['MED_ID']))
+        #     i += 1
+
+    def setMedicaments(self):
+        """
+        Set la liste des médecins dans une liste déroulante
+        """
+        queryMedicaments = requests.get("http://127.0.0.1:8000/medicaments", headers=appStack.user.headers)
+        medicaments = queryMedicaments.json()
+        for medicament in medicaments:
+            self.rapport_echantillon1.addItem(medicament['MEDI_LABEL'], medicament['MEDI_ID'])
+            self.rapport_echantillon2.addItem(medicament['MEDI_LABEL'], medicament['MEDI_ID'])
         
-    def insert_medecins(self):
-        x = requests.get('http://127.0.0.1:8000/medecins')
-        jason = x.json()
-        for i in jason:
-            self.CpRendu_medecins.addItem(i['nom'])
 
-    def retour_acceuil(self):
-        widget.setCurrentIndex(widget.currentIndex()-1)
+    def doSomethingNext(self):
+        """
+        Méthode au lancement de la page
+        """
+        return False
 
-    def test(self):
-        print("l'index actuel : "+str(self.CpRendu_medecins.currentIndex()))
-        print("le nom actuel  : "+self.CpRendu_medecins.currentText())
-        if self.CpRendu_motif.currentText() == "Autre":
-           motif = self.CpRendu_motif_autre.text()
-           print("le motif actuel : "+self.CpRendu_motif_autre.text())
+    def goToIndex(self):
+        """
+        Affiche la page "Index"
+        """
+        appStack.setCurrentWidget(appStack.index_page)
+
+    def sendRapport(self):
+        """
+        Envoie les informations renseigné dans le formulaire de rapport
+        """
+        med_id = self.rapport_medecins.itemData(self.rapport_medecins.currentIndex())
+        if self.rapport_motif.currentText() == "Autre":
+           motif = self.rapport_motif_autre.text()
         else:
-            motif = self.CpRendu_motif.currentText()
-            print("le motif actuel : "+self.CpRendu_motif.currentText())
-        commentaire = self.CpRendu_commentaire.toPlainText()
-        print("le commentaire actuel : "+self.CpRendu_commentaire.toPlainText())
-        print("la date actuel : "+todayFr)
-        titre = motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr
-        print("motif = "+motif+" de "+self.CpRendu_medecins.currentText()+" le "+todayFr)
-        x = requests.post('http://127.0.0.1:8000/create_rapport', json={
+            motif = self.rapport_motif.currentText()
+            
+        commentaire = self.rapport_bilan.toPlainText()
+        listeMedicaments = []
+        
+        if self.rapport_medicament1.currentText() != 'Aucun':
+            listeMedicaments.append({'med':1,'id':self.rapport_medicament1.itemData(self.rapport_medicament1.currentIndex()),'nbr':self.rapport_nbr_medic1.value()})
+        else:
+            listeMedicaments.append({'med':0})
+        if self.rapport_medicament2.currentText() != 'Aucun':
+            listeMedicaments.append({'med':2,'id':self.rapport_medicament2.itemData(self.rapport_medicament2.currentIndex()),'nbr':self.rapport_nbr_medic2.value()})
+        else:        
+            listeMedicaments.append({'med':0})
+
+        create_rapport = requests.post('http://127.0.0.1:8000/create_rapport', json={
             "RAP_DATE":todayFr,
-            "RAP_BILAN":titre,
+            "RAP_BILAN":'bilan',
             "RAP_MOTIF":motif,
             "RAP_COMMENTAIRE":commentaire,
-            "MED_ID":
-            })
+            "MED_ID": med_id,
+            "VIS_MATRICULE": appStack.user.id
+            },headers=appStack.user.headers) 
+        getLastRapp = (requests.get('http://127.0.0.1:8000/maxrapport', headers=appStack.user.headers)).json()
+        for medicament in listeMedicaments:
+            if medicament['med'] != 0:
+                json ={
+                      "ECH_NOMBRE": medicament['nbr'],
+                      "RAP_NUM": getLastRapp,
+                      "MEDI_ID": medicament['id']
+                    } 
+                print(json)
+                requests.post('http://127.0.0.1:8000/add_echantillon', json={
+                      "ECH_NOMBRE": medicament['nbr'],
+                      "RAP_NUM": getLastRapp,
+                      "MEDI_ID": medicament['id']
+                    } ,headers=appStack.user.headers)
 
-        
-class ViewPdf(QMainWindow):
-    """docstring for CpRendu"""
+        self.goToIndex()
+
+class Stack(QtWidgets.QStackedWidget):
     def __init__(self):
-        super().__init__()
-        self.tokaccess = ""
-        super(ViewPdf, self).__init__()
-        loadUi("ui/ViewRapport.ui", self)
-        self.view_retour.clicked.connect(self.retour_acceuil)
+        super(Stack, self).__init__()
+        # Index 0
+        self.login_page = Login_page()
+        # Index 1
+        # self.index_page = Index_page()
+        self.addWidget(self.login_page)
+        # self.addWidget(self.index_page)
+        self.initCurrent()
+        self.currentChanged.connect(self.initCurrent)
+        self.setWindowIcon(QtGui.QIcon('ui/logoGSB.png'))
+        self.setWindowTitle("AppliVisiteur")
+
+    def deconnection(self):
+        """
+        Déconnecte l'utilisateur
+        """
+        self.setCurrentWidget(appStack.login_page)
+        del self.user
+        del self.index_page
+        del self.rapport_page
+        del self.admin_page
+
+    def initCurrent(self):
+        if self.currentWidget():
+            self.currentWidget().doSomethingNext()
+
+    def launchIndex(self,access_token,id_user):
+        """
+        Initie les pages de l'application
+        """
+        self.user = User(access_token,id_user)
+        self.admin_page = Admin_page()
+        self.index_page = Index_page()
+        self.rapport_page = Rapport_page()
+        # self.rapport_page = Rapport_page()
+        self.addWidget(self.admin_page)
+        self.addWidget(self.index_page)
+        self.addWidget(self.rapport_page)
+        self.setCurrentWidget(self.index_page)
+
+
+if __name__ == "__main__":
     
-    def retour_acceuil(self):
-        widget.setCurrentIndex(widget.currentIndex()-2)
 
+    today = date.today()
+    todayFr = today.strftime("%Y-%m-%d")
+    app = QApplication(sys.argv)
+    appStack = Stack()
+    appStack.show()
 
-
-app = QApplication(sys.argv)
-
-app.setStyleSheet("""
-    Qwidget {
-                  background-color: "#8797AF";
-    }
-
-    QPushButton{
-                  background-color: "#7AA095";
-                  border-radius: 5px;
-    }
-    
-
- """)
-
-
-today = date.today()
-todayFr = today.strftime("%d/%m/%Y")
-
-
-widget = QtWidgets.QStackedWidget()
-login = Window()
-menu = Screen2(login)
-CpRendu = CpRendu()
-View = ViewPdf()
-widget.addWidget(login)
-widget.addWidget(menu)
-widget.addWidget(CpRendu)
-widget.addWidget(View)
-
-widget.show()
-sys.exit(app.exec())
+    sys.exit(app.exec())
