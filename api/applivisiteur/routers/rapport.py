@@ -20,7 +20,7 @@ def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(o
 
 
 @router.get('/rapport/{id}', response_model=schemas.Rapport)
-def get_rapport(id: int, db: Session = Depends(get_db)):
+def get_rapport(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     rapport = db.query(models.Rapport_Visite).filter(
         models.Rapport_Visite.RAP_NUM == id).first()
     if not rapport:
@@ -40,7 +40,7 @@ def get_rapport_by_vis_matricule(vis_id: int, db: Session = Depends(get_db),curr
 
 
 @router.post('/create_rapport', response_model=schemas.Rapport)
-def create_rapport(request: schemas.Rapport, db: Session = Depends(get_db)):
+def create_rapport(request: schemas.Rapport, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     new_rapport = models.Rapport_Visite(RAP_DATE=request.RAP_DATE, RAP_BILAN=request.RAP_BILAN,
                                         RAP_MOTIF=request.RAP_MOTIF, RAP_COMMENTAIRE=request.RAP_COMMENTAIRE, MED_ID=request.MED_ID ,VIS_MATRICULE=request.VIS_MATRICULE)
     db.add(new_rapport)
@@ -71,7 +71,7 @@ def update(id, request: schemas.Rapport, db: Session = Depends(get_db),current_u
     return 'done'
 
 @router.get('/maxrapport', response_model=int)
-def max_rapport(db: Session = Depends(get_db)):
+def max_rapport(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
     max_rapport = db.query(func.max(models.Rapport_Visite.RAP_NUM)).scalar()
     if max_rapport is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
