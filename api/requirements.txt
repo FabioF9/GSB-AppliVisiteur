@@ -6,3 +6,5 @@ bcrypt
 python-jose
 python-multipart
 Faker
+pymysql
+python-dotenv
