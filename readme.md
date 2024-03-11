@@ -1,7 +1,7 @@
-# Project Name
+# AppliVisiteur
 
 ### Description
-[Project Name] is a [brief description of your project]. It aims to [state the main goal or purpose of your project].
+Applivisiteur est une application qui va permettre de faciliter la centralisation des compte-rendu de visite pour les visiteurs médicaux au sein du laboratoire GSB (Galaxy Swiss Bourdin).
 
 ### Features
 - Feature 1
