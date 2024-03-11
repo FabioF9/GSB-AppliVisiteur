@@ -27,7 +27,7 @@ class User():
 
         Envoie une requête à la L'API " /visiteur/{id} "
         """
-        userdatas = (requests.get(f'http://127.0.0.1:8000/visiteur/{self.id}')).json()
+        userdatas = (requests.get(f'http://192.168.1.119:8000/visiteur/{self.id}')).json()
         self.admin = userdatas["VIS_ADMIN"]
 
 class Login_page(QtWidgets.QWidget):
@@ -50,7 +50,7 @@ class Login_page(QtWidgets.QWidget):
         login   = self.login_input1.text()
         mdp     = self.login_input2.text()
 
-        x = requests.post(f'http://127.0.0.1:8000/login',
+        x = requests.post(f'http://192.168.1.119:8000/login',
         data={
             "grant_type":"",
             "username":login,
@@ -62,8 +62,10 @@ class Login_page(QtWidgets.QWidget):
         if x.status_code == 200:
             self.tokaccess = x.json()[0]['access_token']
             appStack.launchIndex(self.tokaccess,x.json()[1])
+            return x.status_code
         else:
             print('Username or Password are wrong !')
+            return x.status_code
 
     def doSomethingNext(self):
         """
@@ -107,7 +109,7 @@ class Index_page(QtWidgets.QWidget):
         Effectue une requête pour récupérer les données du visiteur 
         Change le texte du label "index_label_titre"
         """
-        request = requests.get(f'http://127.0.0.1:8000/visiteur/{appStack.user.id}',headers=appStack.user.headers)
+        request = requests.get(f'http://192.168.1.119:8000/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         infoUser = request.json()
         self.index_label_titre.setText(f' Bienvenue {infoUser["LOG_LOGIN"]} {infoUser["VIS_NOM"]} ')
 
@@ -127,7 +129,7 @@ class Index_page(QtWidgets.QWidget):
         from pdf.pdf import CreerPresentation
         while self.index_tableau_rapports.rowCount() > 0:
             self.index_tableau_rapports.removeRow(0)
-        request = requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
+        request = requests.get(f'http://192.168.1.119:8000/rapport/visiteur/{appStack.user.id}',headers=appStack.user.headers)
         all_rapports = request.json()
         button_dict = {}
         suppr_dict = {}
@@ -163,7 +165,7 @@ class Index_page(QtWidgets.QWidget):
         Ouvre la page d'édition des rapport avec les données du rapport sélectionné
         """
         # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
-        rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
+        rapport_query = requests.get(f'http://192.168.1.119:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
         rapport_infos = rapport_query.json()
         index_medecin = appStack.rapport_page.rapport_medecins.findData(rapport_infos['MED_ID'])
         if ( index_medecin != -1 ):
@@ -183,7 +185,7 @@ class Index_page(QtWidgets.QWidget):
 
         Supprime dans la base de donnée le rapport sélectionnée à l'aide d'une requête à l'API "/delete_rapport"
         """
-        delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
+        delete_RAP = requests.delete(f'http://192.168.1.119:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
         self.setRapportList()
 
 class Admin_page(QtWidgets.QWidget):
@@ -205,7 +207,7 @@ class Admin_page(QtWidgets.QWidget):
         Récupére les informations des visiteur en charge du visiteur connecté (Svst) et les set
     
         """
-        sousFifre = (requests.get(f'http://127.0.0.1:8000/visiteurgroup/{appStack.user.id}',headers=appStack.user.headers)).json()
+        sousFifre = (requests.get(f'http://192.168.1.119:8000/visiteurgroup/{appStack.user.id}',headers=appStack.user.headers)).json()
         self.admin_vis1_nom.setText(sousFifre[0]["VIS_NOM"])
         self.admin_vis1_prenom.setText(sousFifre[0]["LOG_LOGIN"])
         self.admin_vis1_count.setText(str(sousFifre[0]["RAPPORT_COUNT"]))
@@ -237,7 +239,7 @@ class Admin_page(QtWidgets.QWidget):
         from pdf.pdf import CreerPresentation
         while self.admin_tableau_rapports.rowCount() > 0:
             self.admin_tableau_rapports.removeRow(0)
-        rapportsVis = (requests.get(f'http://127.0.0.1:8000/rapport/visiteur/{id_vis}',headers=appStack.user.headers)).json()
+        rapportsVis = (requests.get(f'http://192.168.1.119:8000/rapport/visiteur/{id_vis}',headers=appStack.user.headers)).json()
         button_dict = {}
         suppr_dict = {}
         edit_dict = {}
@@ -271,7 +273,7 @@ class Admin_page(QtWidgets.QWidget):
 
         Supprime dans la base de donnée le rapport sélectionnée à l'aide d'une requête à l'API "/delete_rapport"
         """        
-        delete_RAP = requests.delete(f'http://127.0.0.1:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
+        delete_RAP = requests.delete(f'http://192.168.1.119:8000/delete_rapport/{id_RAP}',headers=appStack.user.headers)
         self.setVisRapports()
 
     def goToRapport(self):
@@ -287,7 +289,7 @@ class Admin_page(QtWidgets.QWidget):
         Ouvre la page d'édition des rapport avec les données du rapport sélectionné
         """        
         # {'RAP_DATE': '2023-12-18', 'RAP_BILAN': 'Acheté', 'RAP_MOTIF': 'Visite', 'RAP_COMMENTAIRE': '"tgrty', 'MED_ID': 1, 'VIS_MATRICULE': 1}
-        rapport_query = requests.get(f'http://127.0.0.1:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
+        rapport_query = requests.get(f'http://192.168.1.119:8000/rapport/{RAP_NUM}',headers=appStack.user.headers)
         rapport_infos = rapport_query.json()
         index_medecin = appStack.rapport_page.rapport_medecins.findData(rapport_infos['MED_ID'])
         if ( index_medecin != -1 ):
@@ -318,7 +320,7 @@ class Rapport_page(QtWidgets.QWidget):
         """
         Set la liste des médecins dans une liste déroulante
         """
-        queryMedecins = requests.get("http://127.0.0.1:8000/medecins", headers=appStack.user.headers)
+        queryMedecins = requests.get("http://192.168.1.119:8000/medecins", headers=appStack.user.headers)
         jsonMedecins = queryMedecins.json()
         i = 0
         print(jsonMedecins)
@@ -332,7 +334,7 @@ class Rapport_page(QtWidgets.QWidget):
         """
         Set la liste des médecins dans une liste déroulante
         """
-        queryMedicaments = requests.get("http://127.0.0.1:8000/medicaments", headers=appStack.user.headers)
+        queryMedicaments = requests.get("http://192.168.1.119:8000/medicaments", headers=appStack.user.headers)
         medicaments = queryMedicaments.json()
         for medicament in medicaments:
             self.rapport_echantillon1.addItem(medicament['MEDI_LABEL'], medicament['MEDI_ID'])
@@ -373,7 +375,7 @@ class Rapport_page(QtWidgets.QWidget):
         else:        
             listeMedicaments.append({'med':0})
 
-        create_rapport = requests.post('http://127.0.0.1:8000/create_rapport', json={
+        create_rapport = requests.post('http://192.168.1.119:8000/create_rapport', json={
             "RAP_DATE":todayFr,
             "RAP_BILAN":'bilan',
             "RAP_MOTIF":motif,
@@ -381,7 +383,7 @@ class Rapport_page(QtWidgets.QWidget):
             "MED_ID": med_id,
             "VIS_MATRICULE": appStack.user.id
             },headers=appStack.user.headers) 
-        getLastRapp = (requests.get('http://127.0.0.1:8000/maxrapport', headers=appStack.user.headers)).json()
+        getLastRapp = (requests.get('http://192.168.1.119:8000/maxrapport', headers=appStack.user.headers)).json()
         for medicament in listeMedicaments:
             if medicament['med'] != 0:
                 json ={
@@ -390,7 +392,7 @@ class Rapport_page(QtWidgets.QWidget):
                       "MEDI_ID": medicament['id']
                     } 
                 print(json)
-                requests.post('http://127.0.0.1:8000/add_echantillon', json={
+                requests.post('http://192.168.1.119:8000/add_echantillon', json={
                       "ECH_NOMBRE": medicament['nbr'],
                       "RAP_NUM": getLastRapp,
                       "MEDI_ID": medicament['id']
