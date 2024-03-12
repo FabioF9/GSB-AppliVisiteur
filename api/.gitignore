@@ -2,3 +2,4 @@ __pycache__
 applivisiteur.db
 .env
 .pytest_cache
+logfile.log
