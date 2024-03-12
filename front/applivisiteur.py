@@ -27,8 +27,10 @@ class User():
 
         Envoie une requête à la L'API " /visiteur/{id} "
         """
-        userdatas = (requests.get(f'http://192.168.1.119:8000/visiteur/{self.id}')).json()
-        self.admin = userdatas["VIS_ADMIN"]
+        userdatas = requests.get(f'http://192.168.1.119:8000/visiteur/{self.id}',headers=self.headers)
+        userdatas = userdatas.json()
+        if userdatas["VIS_ADMIN"] :
+            self.admin = True
 
 class Login_page(QtWidgets.QWidget):
     def __init__(self):
@@ -207,22 +209,24 @@ class Admin_page(QtWidgets.QWidget):
         Récupére les informations des visiteur en charge du visiteur connecté (Svst) et les set
     
         """
-        sousFifre = (requests.get(f'http://192.168.1.119:8000/visiteurgroup/{appStack.user.id}',headers=appStack.user.headers)).json()
-        self.admin_vis1_nom.setText(sousFifre[0]["VIS_NOM"])
-        self.admin_vis1_prenom.setText(sousFifre[0]["LOG_LOGIN"])
-        self.admin_vis1_count.setText(str(sousFifre[0]["RAPPORT_COUNT"]))
-        self.admin_boutton_vis1.clicked.connect(lambda _, id_vis=int(sousFifre[0]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
-        self.admin_boutton_vis1.setIcon(QIcon('ui/eye.png'))
-        self.admin_vis2_nom.setText(sousFifre[1]["VIS_NOM"])
-        self.admin_vis2_prenom.setText(sousFifre[1]["LOG_LOGIN"])
-        self.admin_vis2_count.setText(str(sousFifre[1]["RAPPORT_COUNT"]))
-        self.admin_boutton_vis2.clicked.connect(lambda _, id_vis=int(sousFifre[1]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
-        self.admin_boutton_vis2.setIcon(QIcon('ui/eye.png'))
-        self.admin_vis3_nom.setText(sousFifre[2]["VIS_NOM"])
-        self.admin_vis3_prenom.setText(sousFifre[2]["LOG_LOGIN"])
-        self.admin_vis3_count.setText(str(sousFifre[2]["RAPPORT_COUNT"]))
-        self.admin_boutton_vis3.clicked.connect(lambda _, id_vis=int(sousFifre[2]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
-        self.admin_boutton_vis3.setIcon(QIcon('ui/eye.png'))
+        sousFifre = requests.get(f'http://192.168.1.119:8000/visiteurgroup/{appStack.user.id}',headers=appStack.user.headers)
+        sousFifre = sousFifre.json()
+        print(sousFifre)
+        # self.admin_vis1_nom.setText(sousFifre[0]["VIS_NOM"])
+        # self.admin_vis1_prenom.setText(sousFifre[0]["LOG_LOGIN"])
+        # self.admin_vis1_count.setText(str(sousFifre[0]["RAPPORT_COUNT"]))
+        # self.admin_boutton_vis1.clicked.connect(lambda _, id_vis=int(sousFifre[0]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
+        # self.admin_boutton_vis1.setIcon(QIcon('ui/eye.png'))
+        # self.admin_vis2_nom.setText(sousFifre[1]["VIS_NOM"])
+        # self.admin_vis2_prenom.setText(sousFifre[1]["LOG_LOGIN"])
+        # self.admin_vis2_count.setText(str(sousFifre[1]["RAPPORT_COUNT"]))
+        # self.admin_boutton_vis2.clicked.connect(lambda _, id_vis=int(sousFifre[1]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
+        # self.admin_boutton_vis2.setIcon(QIcon('ui/eye.png'))
+        # self.admin_vis3_nom.setText(sousFifre[2]["VIS_NOM"])
+        # self.admin_vis3_prenom.setText(sousFifre[2]["LOG_LOGIN"])
+        # self.admin_vis3_count.setText(str(sousFifre[2]["RAPPORT_COUNT"]))
+        # self.admin_boutton_vis3.clicked.connect(lambda _, id_vis=int(sousFifre[2]["VIS_MATRICULE"]): self.setVisRapports(id_vis))
+        # self.admin_boutton_vis3.setIcon(QIcon('ui/eye.png'))
 
     def setVisRapports(self,id_vis):
         """
@@ -323,10 +327,8 @@ class Rapport_page(QtWidgets.QWidget):
         queryMedecins = requests.get("http://192.168.1.119:8000/medecins", headers=appStack.user.headers)
         jsonMedecins = queryMedecins.json()
         i = 0
-        print(jsonMedecins)
         for medecin in jsonMedecins:
             nomMed = medecin['MED_NOM']+' '+medecin['MED_PRENOM']
-            print(nomMed)
             # self.rapport_medecins.addItems(Qstring(nomMed),int(medecin['MED_ID']))
         #     i += 1
 
