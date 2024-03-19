@@ -359,8 +359,6 @@ class Rapport_page(QtWidgets.QWidget):
         """
         Envoie les informations renseigné dans le formulaire de rapport
         """
-
-        
         med_id = self.rapport_medecins.itemData(self.rapport_medecins.currentIndex())
         if self.rapport_motif.currentText() == "Autre":
            motif = self.rapport_motif_autre.text()
