@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>967</width>
-    <height>646</height>
+    <width>1000</width>
+    <height>545</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>545</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1000</width>
+    <height>545</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -87,7 +99,10 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="admin_boutton_vis1">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Voir</string>
           </property>
@@ -147,7 +162,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>TextLabel</string>
+             <string>Nombre de rapports</string>
             </property>
            </widget>
           </item>
@@ -161,7 +176,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="admin_boutton_vis2">
           <property name="text">
            <string>Voir</string>
           </property>
@@ -224,7 +239,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>TextLabel</string>
+             <string>Nombre de rapports</string>
             </property>
            </widget>
           </item>
@@ -238,7 +253,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="admin_boutton_vis3">
           <property name="text">
            <string>Voir</string>
           </property>
@@ -256,14 +271,20 @@
         </size>
        </property>
        <property name="text">
-        <string>Retour Index</string>
+        <string>Retour</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget">
+    <widget class="QTableWidget" name="admin_tableau_rapports">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <column>
       <property name="text">
        <string>Date</string>
