@@ -7,7 +7,6 @@ client = TestClient(app)
 
 # Test pour vérifier si tous les rapports sont récupérés avec succès
 def test_get_all_rapports():
-    # Supposez que vous avez un endpoint /login qui renvoie un token après une authentification réussie
     # Vous pouvez vous authentifier en envoyant un nom d'utilisateur et un mot de passe valide pour obtenir le token
     login_response = client.post("/login", data={"username": "demo", "password": "password"})
     print(login_response)
