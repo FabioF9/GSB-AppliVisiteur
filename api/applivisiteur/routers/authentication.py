@@ -9,9 +9,14 @@ router = APIRouter(
     tags=['Authentication']
 )
 
-
 @router.post('/login')
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
+    """
+    Permet la connexion à l'api, afin d'être authentifier pour pouvoir utiliser les différentes routes de l'api.
+    Si l'utilisateur n'est pas trouvé dans la base de donnée une exception 404 est levée
+    Si le hash du mot de passe ne correspond pas à celui en base de donnée une exception 404 est levée
+    Si l'utilisateur et le mot de passe sont corrects, création d'un token/jeton qui permet ensuite d'être authentifier par l'API
+    """
     user = db.query(models.Visiteur).filter(
         models.Visiteur.LOG_LOGIN == request.username).first()
     if not user:

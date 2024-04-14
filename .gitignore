@@ -1,3 +1,4 @@
 venv
 api/applivisiteur.db
 front/pdf/__pycache__/pdf.cpython-311.pyc
+.env

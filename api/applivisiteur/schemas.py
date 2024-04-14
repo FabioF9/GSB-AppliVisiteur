@@ -83,6 +83,24 @@ class showRapport (BaseModel):
     creator: showRapportCreator
     affiliate_med : showRapportMedecin
 
+class Echantillons (BaseModel):
+
+    ECH_NOMBRE: int
+    RAP_NUM: int
+    MEDI_ID: int
+
+class Medicaments (BaseModel):
+
+    MEDI_ID: int
+    MEDI_LABEL: str
+    MEDI_Date: date
+    MEDI_COMPOSITION : str
+    MEDI_EFFETS : str
+    MEDI_CONTREINDIC : str
+    MEDI_PRIX : int
+    MEDI_STOCK : str
+
+
 
 class Login(BaseModel):
     username: str
@@ -95,4 +113,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    email: str | None = None
+    email: str 
