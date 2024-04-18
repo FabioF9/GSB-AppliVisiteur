@@ -12,7 +12,7 @@ get_db = database.get_db
 
 
 @router.get('/visiteurs', response_model=List[schemas.showVisiteur])
-def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def all(db: Session = Depends(get_db)):
     """
     Récupère tous les visiteurs.
 
@@ -30,7 +30,7 @@ def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(o
     return visiteurs
 
 @router.get('/visiteur/{id}', response_model=schemas.showVisiteur)
-def get_user(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_user(id: int, db: Session = Depends(get_db)):
     """
     Récupère un visiteur par ID et compte le nombre de rapports associés.
 
@@ -57,7 +57,8 @@ def get_user(id: int, db: Session = Depends(get_db),current_user: schemas.Visite
 
 
 @router.post('/create_visiteur', response_model=schemas.Visiteur)
-def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+# def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db)):
+def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db)):
     """
     Crée un nouveau visiteur.
 
@@ -77,7 +78,7 @@ def create_visiteur(request: schemas.Visiteur, db: Session = Depends(get_db),cur
     return new_user
 
 @router.get('/visiteurgroup/{id}', response_model=List[schemas.showVisiteurGroup])
-def get_group(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_group(id: int, db: Session = Depends(get_db)):
     """
     Récupère un groupe de visiteurs par ID de groupe et compte le nombre total de rapports associés.
 
