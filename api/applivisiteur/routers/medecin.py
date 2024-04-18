@@ -10,7 +10,7 @@ get_db = database.get_db
 
 
 @router.post('/create_medecin', response_model=schemas.Medecin)
-def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db)):
     """
     Crée un nouveau médecin.
 
@@ -31,7 +31,7 @@ def create_medecin(request: schemas.Medecin, db: Session = Depends(get_db),curre
 
 
 @router.get('/medecin/{id}', response_model=schemas.showMedecin)
-def get_user(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_user(id: int, db: Session = Depends(get_db)):
     """
     Récupère un médecin par ID.
 
@@ -52,7 +52,7 @@ def get_user(id: int, db: Session = Depends(get_db),current_user: schemas.Visite
 
 
 @router.get('/medecins', response_model=List[schemas.showMedecin])
-def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def all(db: Session = Depends(get_db)):
     """
     Récupère tous les médecins.
 
@@ -71,7 +71,7 @@ def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(o
 
 
 @router.delete('/delete_medecin/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def destroy(id, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def destroy(id, db: Session = Depends(get_db)):
     """
     Supprime un médecin.
 
@@ -94,7 +94,7 @@ def destroy(id, db: Session = Depends(get_db),current_user: schemas.Visiteur = D
 
 
 @router.put('/update_medecin/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id, request: schemas.Medecin, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def update(id, request: schemas.Medecin, db: Session = Depends(get_db)):
     """
     Met à jour les informations d'un médecin.
 

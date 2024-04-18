@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="logogsb">
+    <file>logoGSBresize.png</file>
+  </qresource>
+</RCC>

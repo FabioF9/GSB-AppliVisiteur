@@ -11,7 +11,7 @@ get_db = database.get_db
 
 
 @router.get('/rapports', response_model=List[schemas.showRapport])
-def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def all(db: Session = Depends(get_db)):
     """
     Récupère tous les rapports de visite.
 
@@ -30,7 +30,7 @@ def all(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(o
 
 
 @router.get('/rapport/{id}', response_model=schemas.Rapport)
-def get_rapport(id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_rapport(id: int, db: Session = Depends(get_db)):
     """
     Récupère un rapport de visite par ID.
 
@@ -51,7 +51,7 @@ def get_rapport(id: int, db: Session = Depends(get_db),current_user: schemas.Vis
 
 
 @router.get('/rapport/visiteur/{vis_id}', response_model=List[schemas.showRapport])
-def get_rapport_by_vis_matricule(vis_id: int, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_rapport_by_vis_matricule(vis_id: int, db: Session = Depends(get_db)):
     """
     Récupère les rapports de visite créés par un visiteur par son matricule.
 
@@ -72,7 +72,7 @@ def get_rapport_by_vis_matricule(vis_id: int, db: Session = Depends(get_db),curr
 
 
 @router.post('/create_rapport', response_model=schemas.Rapport)
-def create_rapport(request: schemas.Rapport, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def create_rapport(request: schemas.Rapport, db: Session = Depends(get_db)):
     """
     Crée un nouveau rapport de visite.
 
@@ -93,7 +93,7 @@ def create_rapport(request: schemas.Rapport, db: Session = Depends(get_db),curre
 
 
 @router.delete('/delete_rapport/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def destroy(id, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def destroy(id, db: Session = Depends(get_db)):
     """
     Supprime un rapport de visite.
 
@@ -115,7 +115,7 @@ def destroy(id, db: Session = Depends(get_db),current_user: schemas.Visiteur = D
     return 'done'
 
 @router.put('/update_rapport/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id, request: schemas.Rapport, db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def update(id, request: schemas.Rapport, db: Session = Depends(get_db)):
     """
     Met à jour un rapport de visite.
 
@@ -137,7 +137,7 @@ def update(id, request: schemas.Rapport, db: Session = Depends(get_db),current_u
     return 'done'
 
 @router.get('/maxrapport', response_model=int)
-def max_rapport(db: Session = Depends(get_db),current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def max_rapport(db: Session = Depends(get_db)):
     """
     Récupère le numéro maximum de rapport de visite.
 
