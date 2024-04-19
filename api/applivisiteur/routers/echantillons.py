@@ -12,7 +12,7 @@ get_db = database.get_db
 
 
 @router.get('/echantillons', response_model=List[schemas.Echantillons])
-def all(db: Session = Depends(get_db), current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def all(db: Session = Depends(get_db)):
     """
     Récupère tous les échantillons.
 
@@ -31,7 +31,7 @@ def all(db: Session = Depends(get_db), current_user: schemas.Visiteur = Depends(
 
 
 @router.get('/echantillons/{id}', response_model=List[schemas.Echantillons])
-def get_group(id: int, db: Session = Depends(get_db), current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def get_group(id: int, db: Session = Depends(get_db)):
     """
     Récupère un groupe d'échantillons par ID.
 
@@ -53,7 +53,7 @@ def get_group(id: int, db: Session = Depends(get_db), current_user: schemas.Visi
 
 
 @router.post('/add_echantillon', response_model=schemas.Echantillons)
-def create_rapport(request: schemas.Echantillons, db: Session = Depends(get_db), current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def create_rapport(request: schemas.Echantillons, db: Session = Depends(get_db)):
     """
     Crée un nouvel échantillon.
 
@@ -74,7 +74,7 @@ def create_rapport(request: schemas.Echantillons, db: Session = Depends(get_db),
 
 
 @router.put('/update_echantillon/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id, request: schemas.Echantillons, db: Session = Depends(get_db), current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def update(id, request: schemas.Echantillons, db: Session = Depends(get_db)):
     """
     Met à jour un échantillon existant.
 
@@ -97,7 +97,7 @@ def update(id, request: schemas.Echantillons, db: Session = Depends(get_db), cur
 
 
 @router.get('/medicaments', response_model=List[schemas.Medicaments])
-def all_medicaments(db: Session = Depends(get_db), current_user: schemas.Visiteur = Depends(oauth2.get_current_user)):
+def all_medicaments(db: Session = Depends(get_db)):
     """
     Récupère tous les médicaments.
 
