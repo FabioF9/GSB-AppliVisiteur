@@ -40,17 +40,17 @@ def CreerPresentation(id_rapport,headers):
 
     Title = "Médicament(s) :"
 
-    LabelMedicaments1 = rapport_medicament1[0]['MEDI_LABEL']
-    Composition1 = rapport_medicament1[0]['MEDI_COMPOSITION']
-    Effet1 = rapport_medicament1[0]['MEDI_EFFETS']
-    CI1 = rapport_medicament1[0]['MEDI_CONTREINDIC']
-    Prix1 = rapport_medicament1[0]['MEDI_PRIX']
+    LabelMedicaments1 = str(rapport_medicament1[0]['MEDI_LABEL'])
+    Composition1 = str(rapport_medicament1[0]['MEDI_COMPOSITION'])
+    Effet1 = str(rapport_medicament1[0]['MEDI_EFFETS'])
+    CI1 = str(rapport_medicament1[0]['MEDI_CONTREINDIC'])
+    Prix1 = str(rapport_medicament1[0]['MEDI_PRIX'])
 
-    LabelMedicaments2 = rapport_medicament2[0]['MEDI_LABEL']
-    Composition2 = rapport_medicament2[0]['MEDI_COMPOSITION']
-    Effet2 = rapport_medicament2[0]['MEDI_EFFETS']
-    CI2 = rapport_medicament2[0]['MEDI_CONTREINDIC']
-    Prix2 = rapport_medicament2[0]['MEDI_PRIX']
+    LabelMedicaments2 = str(rapport_medicament2[0]['MEDI_LABEL'])
+    Composition2 = str(rapport_medicament2[0]['MEDI_COMPOSITION'])
+    Effet2 = str(rapport_medicament2[0]['MEDI_EFFETS'])
+    CI2 = str(rapport_medicament2[0]['MEDI_CONTREINDIC'])
+    Prix2 = str(rapport_medicament2[0]['MEDI_PRIX'])
 
     textMedicament1 = ['Quantité : '+rapport_echantillon[0]['ECH_NOMBRE'],'Composition : '+Composition1,f'Effet(s) : {Effet1}',f'Contre-indication(s) : {CI1}',f'Prix : {Prix1}']
     textMedicament2 = ['Quantité : '+rapport_echantillon[1]['ECH_NOMBRE'],'Composition : '+Composition2,f'Effet(s) : {Effet2}',f'Contre-indication(s) : {CI2}',f'Prix : {Prix2}']
