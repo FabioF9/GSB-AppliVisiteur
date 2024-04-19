@@ -36,7 +36,7 @@ def CreerPresentation(id_rapport,headers):
     image = "pdf/logoGSB.png"
     footer = "2024 GSB Applivsiteur"
 
-    textPraticien = f'Praticien : Dr. {rapport_med['MED_NOM']} {rapport_med['MED_PRENOM']}'
+    textPraticien = 'Praticien : Dr. '+rapport_med['MED_NOM']+' '+rapport_med['MED_PRENOM']
 
     Title = "Médicament(s) :"
 
@@ -52,8 +52,8 @@ def CreerPresentation(id_rapport,headers):
     CI2 = rapport_medicament2[0]['MEDI_CONTREINDIC']
     Prix2 = rapport_medicament2[0]['MEDI_PRIX']
 
-    textMedicament1 = [f'Quantité : {rapport_echantillon[0]['ECH_NOMBRE']}',f'Composition : {Composition1}',f'Effet(s) : {Effet1}',f'Contre-indication(s) : {CI1}',f'Prix : {Prix1}']
-    textMedicament2 = [f'Quantité : {rapport_echantillon[1]['ECH_NOMBRE']}',f'Composition : {Composition2}',f'Effet(s) : {Effet2}',f'Contre-indication(s) : {CI2}',f'Prix : {Prix2}']
+    textMedicament1 = ['Quantité : '+rapport_echantillon[0]['ECH_NOMBRE'],'Composition : '+Composition1,f'Effet(s) : {Effet1}',f'Contre-indication(s) : {CI1}',f'Prix : {Prix1}']
+    textMedicament2 = ['Quantité : '+rapport_echantillon[1]['ECH_NOMBRE'],'Composition : '+Composition2,f'Effet(s) : {Effet2}',f'Contre-indication(s) : {CI2}',f'Prix : {Prix2}']
 
 
 
