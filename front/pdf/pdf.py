@@ -24,8 +24,6 @@ def CreerPresentation(id_rapport,headers):
     rapport_medicament1 = medicament1_query.json()
     medicament2_query   = requests.get('http://192.168.1.119:8000/medicament/'+str(rapport_echantillon[1]['MEDI_ID']),headers=headers)
     rapport_medicament2 = medicament1_query.json()
-    print(rapport_medicament1)
-    print(rapport_medicament2)
 
 
 
