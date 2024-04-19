@@ -19,7 +19,7 @@ config_local = False
 if config_local:
     API_LINK = "http://127.0.0.1:8000/"
 else:
-    API_LINK = "http://192.168.1.119:8000/"
+    API_LINK = "http://192.168.1.119:8000/" 
 
 
 class User():
