@@ -116,7 +116,7 @@
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>Connection</string>
+        <string>Connexion</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>

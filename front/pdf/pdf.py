@@ -16,16 +16,14 @@ def CreerPresentation(id_rapport,headers):
 
     rapport_query       = requests.get(f'http://192.168.1.119:8000/rapport/{id_rapport}',headers=headers)
     rapport_infos       = rapport_query.json()
-    medecin_query       = requests.get(f'http://192.168.1.119:8000/medecin/{rapport_infos['MED_ID']}',headers=headers)
+    medecin_query       = requests.get('http://192.168.1.119:8000/medecin/'+str(rapport_infos['MED_ID']),headers=headers)
     rapport_med         = medecin_query.json()
     echantillon_query   = requests.get(f'http://192.168.1.119:8000/echantillons/{id_rapport}',headers=headers)
     rapport_echantillon = echantillon_query.json() 
-    medicament1_query   = requests.get(f'http://192.168.1.119:8000/medicament/{rapport_echantillon[0]['MEDI_ID']}',headers=headers)
+    medicament1_query   = requests.get('http://192.168.1.119:8000/medicament/'+str(rapport_echantillon[0]['MEDI_ID']),headers=headers)
     rapport_medicament1 = medicament1_query.json()
-    medicament2_query   = requests.get(f'http://192.168.1.119:8000/medicament/{rapport_echantillon[1]['MEDI_ID']}',headers=headers)
+    medicament2_query   = requests.get('http://192.168.1.119:8000/medicament/'+str(rapport_echantillon[1]['MEDI_ID']),headers=headers)
     rapport_medicament2 = medicament1_query.json()
-    print(rapport_medicament1)
-    print(rapport_medicament2)
 
 
 
@@ -36,24 +34,24 @@ def CreerPresentation(id_rapport,headers):
     image = "pdf/logoGSB.png"
     footer = "2024 GSB Applivsiteur"
 
-    textPraticien = f'Praticien : Dr. {rapport_med['MED_NOM']} {rapport_med['MED_PRENOM']}'
+    textPraticien = 'Praticien : Dr. '+rapport_med['MED_NOM']+' '+rapport_med['MED_PRENOM']
 
     Title = "Médicament(s) :"
 
-    LabelMedicaments1 = rapport_medicament1[0]['MEDI_LABEL']
-    Composition1 = rapport_medicament1[0]['MEDI_COMPOSITION']
-    Effet1 = rapport_medicament1[0]['MEDI_EFFETS']
-    CI1 = rapport_medicament1[0]['MEDI_CONTREINDIC']
-    Prix1 = rapport_medicament1[0]['MEDI_PRIX']
+    LabelMedicaments1 = str(rapport_medicament1[0]['MEDI_LABEL'])
+    Composition1 = str(rapport_medicament1[0]['MEDI_COMPOSITION'])
+    Effet1 = str(rapport_medicament1[0]['MEDI_EFFETS'])
+    CI1 = str(rapport_medicament1[0]['MEDI_CONTREINDIC'])
+    Prix1 = str(rapport_medicament1[0]['MEDI_PRIX'])
 
-    LabelMedicaments2 = rapport_medicament2[0]['MEDI_LABEL']
-    Composition2 = rapport_medicament2[0]['MEDI_COMPOSITION']
-    Effet2 = rapport_medicament2[0]['MEDI_EFFETS']
-    CI2 = rapport_medicament2[0]['MEDI_CONTREINDIC']
-    Prix2 = rapport_medicament2[0]['MEDI_PRIX']
+    LabelMedicaments2 = str(rapport_medicament2[0]['MEDI_LABEL'])
+    Composition2 = str(rapport_medicament2[0]['MEDI_COMPOSITION'])
+    Effet2 = str(rapport_medicament2[0]['MEDI_EFFETS'])
+    CI2 = str(rapport_medicament2[0]['MEDI_CONTREINDIC'])
+    Prix2 = str(rapport_medicament2[0]['MEDI_PRIX'])
 
-    textMedicament1 = [f'Quantité : {rapport_echantillon[0]['ECH_NOMBRE']}',f'Composition : {Composition1}',f'Effet(s) : {Effet1}',f'Contre-indication(s) : {CI1}',f'Prix : {Prix1}']
-    textMedicament2 = [f'Quantité : {rapport_echantillon[1]['ECH_NOMBRE']}',f'Composition : {Composition2}',f'Effet(s) : {Effet2}',f'Contre-indication(s) : {CI2}',f'Prix : {Prix2}']
+    textMedicament1 = ['Quantité : '+str(rapport_echantillon[0]['ECH_NOMBRE']),'Composition : '+Composition1,f'Effet(s) : {Effet1}',f'Contre-indication(s) : {CI1}',f'Prix : {Prix1}']
+    textMedicament2 = ['Quantité : '+str(rapport_echantillon[1]['ECH_NOMBRE']),'Composition : '+Composition2,f'Effet(s) : {Effet2}',f'Contre-indication(s) : {CI2}',f'Prix : {Prix2}']
 
 
 
